@@ -1,45 +1,65 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حسابداری پویا</title>
+{% extends 'base.html' %}
 
-    <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+{% load static %} 
 
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+{% block title %}
 
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+حسابداری پویا 
+{% endblock %}
 
-<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+{% block content %}
 
-</head>
-<body dir="rtl">
 
-  <div class="container">
-    <div class="header row">
-        <div class="col-lg-4 col-xs-4  header-right"><img class="logo" src="{% static 'images/logo.png' %}" /></div>
-        <div class="col-lg-4 col-xs-4 header-center"><h4 class="text-header">فروشگاه حاج برات  </h4></div>
-        <div class="col-lg-4 col-xs-4 header-left"><img style="margin-left: 5px;" onclick="coming_soon()" class="icon" src="{% static 'images/register.png' %}">
-        
-        
-            <img onclick="coming_soon()" class="icon" src="{% static 'images/login.png' %}">
-        </div>
+<div class="container">
+  <div class="card-home">
+    <div onclick="coming_soon()" class="card-item-home">
+      <div>
+        <img src="{% static 'images/shop.png' %}" />
 
+        <h4 class="heading-item-card">مدیریت فروشگاه</h4>
+      </div>
+    </div>
+    <div onclick="coming_soon()" class="card-item-home">
+      <div>
+        <img src="{% static 'images/analyses.png' %}" />
+
+        <h4 class="heading-item-card">گزارشات</h4>
+      </div>
+    </div>
+
+    <div onclick="coming_soon()" class="card-item-home">
+      <div>
+        <img src="{% static 'images/product.png' %}" />
+
+        <h4 class="heading-item-card">محصولات من</h4>
+      </div>
+    </div>
+
+    <div onclick="coming_soon()" class="card-item-home">
+      <div>
+        <img src="{% static 'images/customer.png' %}" />
+
+        <h4 class="heading-item-card"> مشتریان من </h4>
+      </div>
+    </div>
+
+    <div onclick="coming_soon()" class="card-item-home">
+      <div>
+        <img src="{% static 'images/support.png' %}" />
+
+        <h4 class="heading-item-card"> پشتیبانی سایت</h4>
+      </div>
+    </div>
+
+    <div onclick="coming_soon()" class="card-item-home">
+      <div>
+        <img src="{% static 'images/logout.png' %}" />
+
+        <h4 class="heading-item-card"> خروج</h4>
+      </div>
     </div>
   </div>
+</div>
 
+{% endblock %}
 
-
-
-
-
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-  <script src="{% static 'js/script.js' %}"></script>
-</body>
-</html>

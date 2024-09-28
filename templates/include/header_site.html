@@ -1,0 +1,26 @@
+
+{% load static %}
+<div class="container">
+    <div class="header row">
+      <div class="col-lg-4 col-xs-4 header-right">
+        <img class="logo" src="{% static 'images/logo.png' %}" />
+      </div>
+      <div class="col-lg-4 col-xs-4 header-center">
+        <h4 class="text-header">فروشگاه حاج برات</h4>
+      </div>
+      <div class="col-lg-4 col-xs-4 header-left">
+        <img
+          style="margin-left: 5px"
+          onclick="coming_soon()"
+          class="icon"
+          src="{% static 'images/register.png' %}"
+        />
+
+        <img
+          onclick="coming_soon()"
+          class="icon"
+          src="{% static 'images/login.png' %}"
+        />
+      </div>
+    </div>
+  </div>
