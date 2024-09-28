@@ -1,0 +1,50 @@
+
+@font-face {
+    font-family: avini;
+    src: url("avini.ttf");
+}
+.header {
+  background: rgba(13, 202, 240, 0.3);
+  border-radius: 20px;
+  height: 60px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(1.6px);
+  -webkit-backdrop-filter: blur(1.6px);
+  border: 1px solid rgba(13, 202, 240, 0.69);
+}
+
+body{
+    background-color: #212121;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    font-family: avini;
+    font-size: 20px;
+}
+.header-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.text-header{
+    color: white;
+    font-size: 25px;
+}
+
+.logo{
+    width: 120px;
+    height: 50px;
+}
+.header-left{
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
+
+.icon{
+    width: 40px;
+    height: 40px;
+}
