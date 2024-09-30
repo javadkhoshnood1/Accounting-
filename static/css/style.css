@@ -2,6 +2,9 @@
   font-family: avini;
   src: url("avini.ttf");
 }
+*{
+  color: white;
+}
 .header {
   background: rgba(13, 202, 240, 0.3);
   border-radius: 20px;
@@ -17,11 +20,27 @@
 
 body {
   background-color: #212121;
-  padding: 0px;
+  padding: 20px 0px;
   margin: 0px;
   border: 0px;
   font-family: avini;
   font-size: 20px;
+}
+@keyframes ani_nodata {
+  from {
+    box-shadow: 0px 0px 15px 0px #0DCAEF;
+  }
+  to {
+    box-shadow: 0px 0px 15px -5px #516a6f;
+  }
+}
+@keyframes ani_card_item {
+  from {
+    box-shadow: 0px 0px 15px 0px #FB86B2;
+  }
+  to {
+    box-shadow: 0px 0px 15px -5px #a67286;
+  }
 }
 .header-center {
   display: flex;
@@ -68,6 +87,9 @@ body {
   box-sizing: border-box;
   width: 300px;
   height: 200px;
+}
+.card-item-home:hover{
+  animation: ani_card_item 0.5s ease-in-out infinite alternate;
 }
 .heading-item-card {
   color: white;
@@ -156,4 +178,106 @@ align-items: center;
 .text-heade-footer{
   color: #212121;
   font-size: 22px;
+}
+
+#modal-login{
+  background-color: #212121;
+  color: white;
+  font-size: 25px;
+}
+
+.modal{
+  background-color: rgba(0, 153, 224, 0.063);
+}
+
+.card-no-data{
+  color: white;
+  width: 100%;
+  height: max-content;
+  background-color: rgba(0, 0, 0, 0.1);
+  margin-top: 20px ;
+  border-radius: 20px;
+  border: 1px solid #FB86B2;
+  padding: 30px;
+  animation: ani_nodata 0.5s ease-in-out infinite alternate;
+  
+}
+.img-nodata{
+  width: 300px;
+  height: 300px;
+  margin: -30px 0px;
+}
+.heade-card-no-data{
+  color: white;
+  background-color: rgba(255,0,0,0.6);
+  text-align: center;
+  font-size: 27px;
+  display: inline;
+  padding: 5px 40px;
+  border-radius: 20px;
+}
+.text-card-no-data{
+  width:350px;
+  text-align: center;
+  font-size: 24px;
+}
+.form-div-reigster{
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid #0DCAEF;
+  margin-top: 30px;
+}
+
+.form-head{
+  color: white;
+  font-size: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-div-reigster form{
+  width: 80%;
+  margin: 0 auto;
+  height: max-content;
+  border: 1px solid #a67286;
+  border-radius: 20px;
+  padding: 30px;
+}
+
+
+.item-input label{
+  font-size: 22px;
+}
+.item-input input{
+  width: 100%;
+  font-size: 20px;
+  color: black;
+}
+.item-input button,a{
+font-size: 20px;
+}
+table thead tr td {
+  font-size: 21px;
+  text-align: center;
+}
+table tbody tr td {
+  font-size: 20px;
+  text-align: center;
+}
+
+.customers-div-right{
+  display: felx;
+
+}
+.customers-div{
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+.customers-div-left{
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding-top: 12px;
+  gap: 8px;
 }

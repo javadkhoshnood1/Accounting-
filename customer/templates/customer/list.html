@@ -1,0 +1,446 @@
+{% extends 'base.html' %} {% load static %} {% load humanize %} {% block title%}
+مشتریان {{request.user.name_shop}} {% endblock %} {% block content %}
+
+<div
+  id="customers"
+  class="container"
+  style="margin-top: 30px; margin-bottom: 30px"
+>
+  <table
+    style="border-radius: 20px"
+    class="table table-hover table-light table-responsive-xxl table-responsive-xl table-responsive-sm"
+  >
+    <h2 class="text-center" style="margin-bottom: -5px">
+      {% if search %} مشتریانی که دارای {{search}}هستند
+      <br />
+      
+      <a
+      class="text-danger"
+
+        style="margin-top: -10px"
+        href="{% url 'customer:list' %}"
+      >
+        لغو فیلتر
+      </a>
+
+      {% else %} مشتریان {{request.user.name_shop}} {% endif %}
+      <br />
+      <a
+      data-bs-toggle="modal"
+      data-bs-target="#add_customer"
+      data-bs-whatever="@mdo"
+        class="text-success"
+        style="margin-top: -10px;cursor: pointer;"
+      >
+      افزودن مشتری 
+      </a>
+      /
+      <a
+        class="text-danger"
+        style="margin-top: -10px"
+        href="{% url 'home:index' %}"
+      >
+        بازگشت به منو
+      </a>
+    </h2>
+
+    <div class="customers-div row">
+      <div class="col-6 customers-div-right">
+        <form method="get">
+          <label style="display: block; font-size: 20px; color: #0dcaef"
+            >جستجو مشتریان
+          </label>
+          <input
+            type="text"
+            name="search"
+            required
+            class="form-control"
+            style="width: 50%; display: inline; margin-left: 8px"
+          />
+          <button type="submit" class="btn btn-outline-primary">جستجو</button>
+        </form>
+      </div>
+      <div class="col-6 customers-div-left">
+        <button onclick="customers()" class="btn btn-outline-secondary">
+          همه
+        </button>
+        <button onclick="customers_not_paid()" class="btn btn-outline-danger">
+          پرداخت نشده<img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/false.png' %}"
+          />
+        </button>
+        <button onclick="customers_paid()" class="btn btn-outline-success">
+          پرداخت شده
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/true.png' %}"
+          />
+        </button>
+      </div>
+    </div>
+    <thead class="bg-light">
+      <tr>
+        <td>آیدی</td>
+        <td>نام و نام خانوادگی</td>
+        <td>شماره تماس</td>
+        <td>حساب</td>
+        <td>وضعیت</td>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for customer in customers %}
+      <a href="{% url 'customer:detail' customer.id %}">
+        <tr>
+          <td>
+            <a href="{% url 'customer:detail' customer.id %}"
+              >{{customer.id}}</a
+            >
+          </td>
+          <td>
+            <a
+              style="color: black; text-decoration: none"
+              href="{% url 'customer:detail' customer.id %}"
+              >{{customer.fullname}}</a
+            >
+          </td>
+          <td>{{customer.phone}}</td>
+          <td>{{customer.price|intcomma:0}}تومان</td>
+          <td>
+            {% if customer.is_paid == True %}
+            <img
+              style="width: 25px; height: 25px"
+              src="{% static 'images/true.png' %}"
+            />
+
+            {% else %}
+            <img
+              style="width: 25px; height: 25px"
+              src="{% static 'images/false.png' %}"
+            />
+            {% endif %}
+          </td>
+        </tr>
+      </a>
+
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div
+  id="customers_paid"
+  class="container"
+  style="margin-top: 30px; margin-bottom: 30px; display: none"
+>
+  <table
+    style="border-radius: 20px"
+    class="table table-hover table-light table-responsive-xxl table-responsive-xl table-responsive-sm"
+  >
+    <h2 class="text-center" style="margin-bottom: -5px">
+      {% if search %} مشتریانی که دارای {{search}}هستند
+      <br />
+      <a
+        class="text-danger"
+        style="margin-top: -10px"
+        href="{% url 'customer:list' %}"
+      >
+        لغو فیلتر
+      </a>
+
+      {% else %} مشتریان {{request.user.name_shop}} {% endif %}
+      <br />
+
+      <a
+      data-bs-toggle="modal"
+      data-bs-target="#add_customer"
+      data-bs-whatever="@mdo"
+        class="text-success"
+        style="margin-top: -10px;cursor: pointer;"
+      >
+      افزودن مشتری 
+      </a>
+      /
+      <a
+        class="text-danger"
+        style="margin-top: -10px"
+        href="{% url 'home:index' %}"
+      >
+        بازگشت به منو
+      </a>
+    </h2>
+
+    <div class="customers-div row">
+      <div class="col-6 customers-div-right">
+        <form method="get">
+          <label style="display: block; font-size: 20px; color: #0dcaef"
+            >جستجو مشتریان
+          </label>
+          <input
+            type="text"
+            name="search"
+            required
+            class="form-control"
+            style="width: 50%; display: inline; margin-left: 8px"
+          />
+          <button type="submit" class="btn btn-outline-primary">جستجو</button>
+        </form>
+        
+      </div>
+      <div class="col-6 customers-div-left">
+        <button onclick="customers()" class="btn btn-outline-secondary">
+          همه
+        </button>
+        <button onclick="customers_not_paid()" class="btn btn-outline-danger">
+          پرداخت نشده<img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/false.png' %}"
+          />
+        </button>
+        <button onclick="customers_paid()" class="btn btn-outline-success">
+          پرداخت شده
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/true.png' %}"
+          />
+        </button>
+      </div>
+    </div>
+    <thead class="bg-light">
+      <tr>
+        <td>آیدی</td>
+        <td>نام و نام خانوادگی</td>
+        <td>شماره تماس</td>
+        <td>حساب</td>
+        <td>وضعیت</td>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for customer in customers %} {% if customer.is_paid == True %}
+      <a href="{% url 'customer:detail' customer.id %}">
+        <tr>
+          <td>
+            <a href="{% url 'customer:detail' customer.id %}"
+              >{{customer.id}}</a
+            >
+          </td>
+          <td>
+            <a
+              style="color: black; text-decoration: none"
+              href="{% url 'customer:detail' customer.id %}"
+              >{{customer.fullname}}</a
+            >
+          </td>
+          <td>{{customer.phone}}</td>
+          <td>{{customer.price|intcomma:0}}تومان</td>
+          <td>
+            {% if customer.is_paid == True %}
+            <img
+              style="width: 25px; height: 25px"
+              src="{% static 'images/true.png' %}"
+            />
+
+            {% else %}
+            <img
+              style="width: 25px; height: 25px"
+              src="{% static 'images/false.png' %}"
+            />
+            {% endif %}
+          </td>
+        </tr>
+      </a>
+      {% endif %} {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div
+  id="customers_not_paid"
+  class="container"
+  style="margin-top: 30px; margin-bottom: 30px; display: none"
+>
+  <table
+    style="border-radius: 20px"
+    class="table table-hover table-light table-responsive-xxl table-responsive-xl table-responsive-sm"
+  >
+    <h2 class="text-center" style="margin-bottom: -5px">
+      {% if search %} مشتریانی که دارای {{search}}هستند
+      <br />
+
+      
+      <a
+        class="text-danger"
+        style="margin-top: -10px"
+        href="{% url 'customer:list' %}"
+      >
+        لغو فیلتر
+      </a>
+
+      {% else %} مشتریان {{request.user.name_shop}} {% endif %}
+      <br />
+      <a
+      data-bs-toggle="modal"
+      data-bs-target="#add_customer"
+      data-bs-whatever="@mdo"
+        class="text-success"
+        style="margin-top: -10px;cursor: pointer;"
+      >
+      افزودن مشتری 
+      </a>
+      /
+      <a
+        class="text-danger"
+        style="margin-top: -10px"
+        href="{% url 'home:index' %}"
+      >
+        بازگشت به منو
+      </a>
+    </h2>
+
+    <div class="customers-div row">
+      <div class="col-6 customers-div-right">
+        <form method="get">
+          <label style="display: block; font-size: 20px; color: #0dcaef"
+            >جستجو مشتریان
+          </label>
+          <input
+            type="text"
+            name="search"
+            required
+            class="form-control"
+            style="width: 50%; display: inline; margin-left: 8px"
+          />
+          <button type="submit" class="btn btn-outline-primary">جستجو</button>
+        </form>
+      </div>
+      <div class="col-6 customers-div-left">
+        <button onclick="customers()" class="btn btn-outline-secondary">
+          همه
+        </button>
+        <button onclick="customers_not_paid()" class="btn btn-outline-danger">
+          پرداخت نشده<img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/false.png' %}"
+          />
+        </button>
+        <button onclick="customers_paid()" class="btn btn-outline-success">
+          پرداخت شده
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/true.png' %}"
+          />
+        </button>
+      </div>
+    </div>
+    <thead class="bg-light">
+      <tr>
+        <td>آیدی</td>
+        <td>نام و نام خانوادگی</td>
+        <td>شماره تماس</td>
+        <td>حساب</td>
+        <td>وضعیت</td>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for customer in customers %} {% if customer.is_paid == False %}
+
+      <tr>
+        <td>
+          <a href="{% url 'customer:detail' customer.id %}">{{customer.id}}</a>
+        </td>
+        <td>
+          <a
+            style="color: black; text-decoration: none"
+            href="{% url 'customer:detail' customer.id %}"
+            >{{customer.fullname}}</a
+          >
+        </td>
+        <td>{{customer.phone}}</td>
+        <td>{{customer.price|intcomma:0}}تومان</td>
+        <td>
+          {% if customer.is_paid == True %}
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/true.png' %}"
+          />
+
+          {% else %}
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/false.png' %}"
+          />
+          {% endif %}
+        </td>
+      </tr>
+
+      {% endif %} {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+<div class="modal fade" id="add_customer">
+  <div class="modal-dialog">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header" >
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px;">فرم  افزودن مشتری  به فروشگاه </h5>
+          <button
+          type="button"
+          style="background-color: red;margin: 0 auto;"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" >
+          {% csrf_token %}
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label">نام و نام خانوادگی  :</label>
+            <input type="text" name="fullname" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label"
+              >شماره تماس :</label
+            >
+            <input type="text" name="phone" class="form-control" id="recipient-name" />
+          </div>
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label">توضیحات:</label>
+            <input type="text" name="discription" class="form-control" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              بازشگت 
+            </button>
+            <button type="submit" class="btn btn-primary">افزودن</button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<script>
+  function customers(params) {
+    document.getElementById("customers").style.display = "grid";
+    document.getElementById("customers_not_paid").style.display = "none";
+    document.getElementById("customers_paid").style.display = "none";
+  }
+
+  function customers_not_paid(params) {
+    document.getElementById("customers").style.display = "none";
+    document.getElementById("customers_not_paid").style.display = "grid";
+    document.getElementById("customers_paid").style.display = "none";
+  }
+
+  function customers_paid(params) {
+    document.getElementById("customers").style.display = "none";
+    document.getElementById("customers_not_paid").style.display = "none";
+    document.getElementById("customers_paid").style.display = "grid";
+  }
+</script>
+{% endblock %}

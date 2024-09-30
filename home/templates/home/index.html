@@ -11,6 +11,9 @@
 
 
 <div class="container">
+  {% if request.user.is_authenticated %}
+
+
   <div class="card-home">
     <div onclick="coming_soon()" class="card-item-home">
       <div>
@@ -35,13 +38,16 @@
       </div>
     </div>
 
-    <div onclick="coming_soon()" class="card-item-home">
+  <a href="{% url 'customer:list' %}">
+    <div  class="card-item-home">
       <div>
         <img src="{% static 'images/customer.png' %}" />
 
         <h4 class="heading-item-card"> مشتریان من </h4>
       </div>
     </div>
+
+  </a>
 
     <div onclick="coming_soon()" class="card-item-home">
       <div>
@@ -51,15 +57,37 @@
       </div>
     </div>
 
-    <div onclick="coming_soon()" class="card-item-home">
+  <a href="{% url 'accounts:logout' %}">
+    <div class="card-item-home">
       <div>
         <img src="{% static 'images/logout.png' %}" />
 
         <h4 class="heading-item-card"> خروج</h4>
       </div>
     </div>
+  </a>
   </div>
+  {% else %}
+  <div class="card-no-data">
+    <div style="display: flex;height: 100%;justify-content: center;align-items: center; ">
+
+    <h4 class="heade-card-no-data">هیچ اطلاعاتی برای شما یافت نشد !!<br/><span style="font-size: 20px ;">وارد حساب کاربری خود شوید </span></h4>
+    </div>
+    <div style="display: flex;height: 100%;justify-content: center;align-items: center;">
+      <img class="img-nodata" src="{% static 'images/nodata.svg' %}"/>
+    </div>
+   <div style="display: flex;height: 100%;justify-content: center;align-items: center;">
+    <p class="text-card-no-data">
+      برای داشتن یک سیستم مدیریت فروش و محصول و مشتری  برای فروشگاه خود میتوانید از سیستم حسابداری <span style="color: #11A5C3; font-size: 40px;"> پویا  </span> که توسط  تیمی جوان و با تجربه ساخته شده است استفاده کنید و با کمترین قیمت به همه امکانات فرروشگاهی خود دسترسی و گزارش هایی از عملکرد فروشگاه خود  وارسی کنید .
+
+
+   </p>
+  </div>
+
+  {% endif %}
 </div>
+
+
 
 {% endblock %}
 

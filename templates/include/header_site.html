@@ -1,26 +1,85 @@
-
 {% load static %}
 <div class="container">
-    <div class="header row">
-      <div class="col-lg-4 col-xs-4 header-right">
-        <img class="logo" src="{% static 'images/logo.png' %}" />
-      </div>
-      <div class="col-lg-4 col-xs-4 header-center">
-        <h4 class="text-header">فروشگاه حاج برات</h4>
-      </div>
-      <div class="col-lg-4 col-xs-4 header-left">
-        <img
-          style="margin-left: 5px"
-          onclick="coming_soon()"
-          class="icon"
-          src="{% static 'images/register.png' %}"
-        />
+  <div class="header row">
+    <div class="col-4 header-right">
+      <img class="logo" src="{% static 'images/logo.png' %}" />
+    </div>
+    <div class="col-4 header-center">
+      <h4 class="text-header"> 
 
-        <img
-          onclick="coming_soon()"
-          class="icon"
-          src="{% static 'images/login.png' %}"
-        />
-      </div>
+        {% if request.user.is_authenticated %}
+
+         {{request.user.fullname}}
+        {% else %}
+
+        حسابداری پویا 
+        {% endif %}
+
+      </h4>
+    </div>
+    <div class="col-4 header-left">
+      {% if request.user.is_authenticated %}
+
+      <img
+        style="margin-left: 5px"
+        onclick="coming_soon()"
+        class="icon"
+        src="{% static 'images/user.png' %}"
+      />
+
+      {% else %}
+
+    
+      <img
+      data-bs-toggle="modal"
+      data-bs-target="#login-form"
+      data-bs-whatever="@mdo"
+      style="margin-left: 5px"
+      class="icon"
+      src="{% static 'images/login.png' %}"
+    />
+     
+
+      {% endif %}
     </div>
   </div>
+</div>
+
+<div class="modal fade" id="login-form">
+  <div class="modal-dialog">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header" >
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px;">فرم ورود مدیر  به فروشگاه </h5>
+          <button
+          type="button"
+          style="background-color: red;margin: 0 auto;"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'accounts:login' %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label"
+              >شماره تماس :</label
+            >
+            <input type="text" name="phone" class="form-control" id="recipient-name" />
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">رمز عبور :</label>
+            <input type="password" name="password" class="form-control" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              بازشگت 
+            </button>
+            <button type="submit" class="btn btn-primary">ورود </button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>

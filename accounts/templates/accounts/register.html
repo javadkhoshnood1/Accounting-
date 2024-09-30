@@ -1,0 +1,116 @@
+{% extends 'base.html' %} {% load static %} {% block title %} ثبت نام در پویا
+{%endblock %} {% block content %}
+<div class="container form-div-reigster">
+{% if  status == False %}
+<div class="form-head">ثبت نام در فروشگاه پویا</div>
+<form class="row"  method="post">
+  {% csrf_token %}
+      <div class="item-input col-lg-6 col-xs-12" style="margin-top: 30px">
+    <label class="d-block"> شماره تماس / اجباری :</label>
+    <input
+      required
+      type="text"
+      name="phone"
+      placeholder="شماره تماس خود را وارد کنید "
+    />
+  </div>
+  <div class="item-input col-lg-6 xol-xs-12" style="margin-top: 30px">
+    <label class="d-block">نام فروشگاه / اجباری : </label>
+    <input
+      required
+      type="text"
+      name="name_shop"
+      placeholder=" نام فروشگاه  خود را وارد کنید "
+    />
+  </div>
+  <div class="item-input col-lg-6 xol-xs-12" style="margin-top: 30px">
+    <label class="d-block">نام مدیر / اجباری : </label>
+    <input
+      required
+      type="text"
+      name="name"
+      placeholder=" نام مدیر   خود را وارد کنید "
+    />
+  </div>
+
+  <div class="item-input col-lg-6 xol-xs-12" style="margin-top: 30px">
+    <label class="d-block">توضحیات مدیر/ اختیاری  : </label>
+    <input
+      type="text"
+      name="discription"
+      required
+      placeholder=" توضیحات  خود را وارد کنید "
+    />
+  </div>
+
+  <div class="item-input col-lg-6 xol-xs-12" style="margin-top: 30px">
+    <label class="d-block"> رمز عبور/ اجباری  : </label>
+    <input
+      type="text"
+      name="password1"
+      required
+      placeholder=" رمز عبور  خود را وارد کنید "
+    />
+  </div>
+  <div class="item-input col-lg-6 xol-xs-12" style="margin-top: 30px">
+    <label class="d-block"> تکرار رمز عبور / اختیاری  : </label>
+    <input
+      type="text"
+      name="password2"
+      required
+      placeholder=" تکرار رمز عبور  خود را وارد کنید "
+    />
+  </div>
+  <div
+    class="item-input col-lg-12 xol-xs-12 d-flex justify-content-between"
+    style="margin-top: 30px"
+  >
+    <a
+      type="button"
+      href="{% url 'home:index' %}"
+      class="btn btn-outline-danger"
+      >بازگشت به صفحه اصلی</a
+    >
+    <button
+      class="btn btn-outline-info"
+      data-bs-toggle="modal"
+      data-bs-target="#login-form"
+      data-bs-whatever="@mdo"
+      type="button"
+    >
+      ورود به حساب
+    </button>
+    <button type="submit" class="btn btn-outline-success">ارسال فرم</button>
+  </div>
+</form>
+{% else %}
+
+<div class="form-head">کد تایید ارسالی به شماره {{phone}}را وارد کنید </div>
+
+{% if phone %}
+
+<form class="row"  method="post" action="{% url 'accounts:code' %}">
+  {% csrf_token %}
+
+  <div class="col-12">
+    <label class="d-block" style="font-size: 22px;">کد تایید ارسالی :</label>
+    <input
+    style="width: 100%; color: black;"
+    type="number"
+    name="code"
+    required
+    placeholder=" کد تایید خود را وارد کنید "
+  />
+  </div>
+<div style="width: 50%;">
+  <button class="btn btn-success">ایجاد کاربر </button>
+
+</div>  
+  </form>
+{% else %}
+
+  {% endif %}
+{% endif %}
+</div>
+
+{% endblock %}
