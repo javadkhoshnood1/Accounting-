@@ -84,7 +84,7 @@
         <td>آیدی</td>
         <td>نام و نام خانوادگی</td>
         <td>شماره تماس</td>
-        <td>حساب</td>
+        <td>مانده حساب </td>
         <td>وضعیت</td>
       </tr>
     </thead>
@@ -106,7 +106,7 @@
             >
           </td>
           <td>{{customer.phone}}</td>
-          <td>{{customer.price|intcomma:0}}تومان</td>
+          <td>{{customer.price_mandeh|intcomma:0}}تومان</td>
           <td>
             {% if customer.is_paid == True %}
             <img
@@ -212,7 +212,7 @@
         <td>آیدی</td>
         <td>نام و نام خانوادگی</td>
         <td>شماره تماس</td>
-        <td>حساب</td>
+        <td>مانده حساب </td>
         <td>وضعیت</td>
       </tr>
     </thead>
@@ -234,7 +234,7 @@
             >
           </td>
           <td>{{customer.phone}}</td>
-          <td>{{customer.price|intcomma:0}}تومان</td>
+          <td>{{customer.price_mandeh|intcomma:0}}تومان</td>
           <td>
             {% if customer.is_paid == True %}
             <img
@@ -339,7 +339,7 @@
         <td>آیدی</td>
         <td>نام و نام خانوادگی</td>
         <td>شماره تماس</td>
-        <td>حساب</td>
+        <td>مانده حساب </td>
         <td>وضعیت</td>
       </tr>
     </thead>
@@ -359,7 +359,7 @@
           >
         </td>
         <td>{{customer.phone}}</td>
-        <td>{{customer.price|intcomma:0}}تومان</td>
+        <td>{{customer.price_mandeh|intcomma:0}}تومان</td>
         <td>
           {% if customer.is_paid == True %}
           <img

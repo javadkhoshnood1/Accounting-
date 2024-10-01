@@ -1,5 +1,5 @@
 from django.db import models
-from jalali_date import datetime2jalali
+from jalali_date import datetime2jalali,date2jalali
 from accounts.models import User
 # Create your models here.
 class Customer(models.Model):
@@ -8,16 +8,20 @@ class Customer(models.Model):
     phone = models.CharField(max_length=12, unique=True, verbose_name="شماره تماس")
     is_active = models.BooleanField(default=True, verbose_name="فعال")
     is_paid = models.BooleanField(default=False, verbose_name="پرداخت شده ")
-
     price = models.BigIntegerField(default=0,verbose_name="حساب در فروشگاه")
+    price_paid = models.BigIntegerField(default=0,verbose_name=" پول  پرداختی لحظه ای   ")
+    price_mandeh = models.BigIntegerField(default=0,verbose_name="باقی مانده در فروشگاه")
+    price_paid_all = models.BigIntegerField(default=0,verbose_name="کل پرداخت شده ها ")
     discription = models.TextField(max_length=300, null=True, blank=True, verbose_name="توضیحات مدیر")
-    created_at = models.DateTimeField(auto_now=True, verbose_name="تاریخ اضافه شدن")
+    created_at = models.DateTimeField(auto_now=True, verbose_name="تاریخ  ")
+    created_data = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ اضافه شدن")
+
     image = models.ImageField(upload_to="customer/", null=True, blank=True, verbose_name="عکس پروفایل")
     address = models.TextField(null=True,blank=True,verbose_name="ادرس کاربر")
 
 
     def Created_at(self):
-        return datetime2jalali(self.created_at)
+        return date2jalali(self.created_data)
 
     class Meta:
         verbose_name = "مشتری"

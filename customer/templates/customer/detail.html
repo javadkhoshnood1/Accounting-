@@ -1,6 +1,388 @@
 {% extends 'base.html' %} {% load static %} {% load humanize %} {% block title%}
-{{customer.fullname}}  {% endblock %} {% block content %}
+{{customer.fullname}} {% endblock %} {% block content %}
 
+<div class="container">
+  <h2 class="text-center" style="margin-top: 20px">
+    جزئیات مشتری {{customer.fullname}}
+    <br />
+    وضعیت {% if customer.is_paid == True %}
+    <span class="text-success">پرداخت شده </span> {% else %}
+    <span class="text-danger">پرداخت نشده </span>
+    {% endif %}
+    <br />
+    <a
+      class="text-danger"
+      style="margin-top: -10px"
+      href="{% url 'home:index' %}"
+    >
+      بازگشت به منو
+    </a>
+    /
 
+    <a
+      class="text-success"
+      style="margin-top: -10px"
+      href="{% url 'customer:list' %}"
+    >
+      لیست مشتریان
+    </a>
+  </h2>
+  <div class="row" style="margin: 30px 0px">
+    <div class="col-lg-6" style="font-size: 18px">
+      مانده حساب {{customer.fullname}}
+      <span style="color: #0dcaef; font-size: 24px"
+        >{{customer.price_mandeh|intcomma:0}} تو مان
+      </span>
+    </div>
 
+    <div
+      class="col-lg-6"
+      style="display: flex; justify-content: end; align-items: center"
+    >
+      <div>
+        <button
+          class="btn btn-outline-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#edit_customer"
+          data-bs-whatever="@mdo"
+        >
+          ویرایش اطلاعات
+          <img
+            style="width: 20px; height: 20px"
+            src="{% static 'images/edit.png' %}"
+          />
+        </button>
+        <button
+          class="btn btn-outline-success"
+          class="btn btn-outline-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#edit_customer_price"
+        >
+          ویرایش حساب
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/true.png' %}"
+          />
+        </button>
+        <a
+          data-bs-toggle="modal"
+          data-bs-target="#delete_customer"
+          data-bs-whatever="@mdo"
+          class="btn btn-outline-danger"
+        >
+          حذف مشتری
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/false.png' %}"
+          />
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="row customer-detail">
+    <div
+      class="col-lg-3"
+      style="display: flex; justify-content: center; align-items: center"
+    >
+      <div>
+        <img
+          src="{% static 'images/customer_detail.png' %}"
+          style="width: 150px; height: 150px"
+        />
+      </div>
+    </div>
+    <div class="col-lg-9 row" style="padding-right: 30px; margin-top: 20px">
+      <div class="col-6" style="margin-bottom: 15px">
+        <span style="font-size: 18px">نام و نام خانوادگی :</span>
+        <h4 style="color: #0dcaef; font-size: 25px">{{customer.fullname}}</h4>
+      </div>
+      <div class="col-6">
+        <span style="font-size: 18px">شماره تماس :</span>
+        <h4 style="color: #0dcaef; font-size: 27px">{{customer.phone}}</h4>
+      </div>
+
+      <div class="col-6" style="margin-bottom: 15px">
+        <span style="font-size: 18px">کل حساب :</span>
+        <h4 style="color: #0dcaef; font-size: 25px">
+          {{customer.price|intcomma:0}} تومان
+        </h4>
+      </div>
+      <div class="col-6" style="margin-bottom: 15px">
+        <span style="font-size: 18px"> کل پرداخت شده ها :</span>
+        <h4 style="color: #0dcaef; font-size: 25px">
+          {{customer.price_paid_all|intcomma:0}} تومان
+        </h4>
+      </div>
+      <div class="col-6" style="margin-bottom: 15px">
+        <span style="font-size: 18px">باقی مانده حساب :</span>
+        <h4 style="color: #0dcaef; font-size: 25px">
+          {{customer.price_mandeh|intcomma:0}} تومان
+        </h4>
+      </div>
+      <div class="col-6" style="margin-bottom: 15px">
+        <span style="font-size: 18px">پرداخت لحظه ای :</span>
+        <h4 style="color: #0dcaef; font-size: 25px">
+          {{customer.price_paid|intcomma:0}} تومان
+        </h4>
+      </div>
+
+      <div class="col-6">
+        <span style="font-size: 18px">توضیحات :</span>
+        <h4 style="color: #0dcaef; font-size: 25px">
+          {{customer.discription}}
+        </h4>
+      </div>
+      <div class="col-6">
+        <span style="font-size: 18px">آدرس:</span>
+        <h4 style="color: #0dcaef; font-size: 25px">{{customer.address}}</h4>
+      </div>
+
+      <div class="col-6">
+        <span style="font-size: 18px">تاریخ خرید:</span>
+        <h4 style="color: #0dcaef; font-size: 25px">{{customer.Created_at}}</h4>
+      </div>
+
+      <div class="col-6" style="background-color: #212121; border-radius: 20px">
+        <span style="font-size: 18px; color: red">ریست اطلاعات:</span>
+        <h4 style="color: #0dcaef; font-size: 25px">
+          <button
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#delete_price_customer"
+            data-bs-whatever="@mdo"
+            class="btn btn-outline-danger"
+          >
+            حذف کل حساب این مشتری
+            <img
+              style="width: 25px; height: 25px"
+              src="{% static 'images/false.png' %}"
+            />
+          </button>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="edit_customer">
+  <div class="modal-dialog">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px">
+          فرم ویرایش اطلاعات مشتری
+        </h5>
+        <button
+          type="button"
+          style="background-color: red; margin: 0 auto"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label"
+              >نام و نام خانوادگی /غیر قابل تغییر
+            </label>
+            <input
+              type="text"
+              disabled
+              value="{{customer.fullname}}"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label">توضیحات:</label>
+            <input
+              type="text"
+              name="discription"
+              value="{{customer.discription}}"
+              class="form-control"
+            />
+          </div>
+
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label">آدرس:</label>
+            <input
+              type="text"
+              name="address"
+              value="{{customer.address}}"
+              class="form-control"
+            />
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              بازشگت
+            </button>
+            <button type="submit" class="btn btn-primary">ویرایش</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="edit_customer_price">
+  <div class="modal-dialog">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px">
+          فرم ویرایش حساب مشتری
+        </h5>
+        <button
+          type="button"
+          style="background-color: red; margin: 0 auto"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form
+          method="post"
+          action="{% url 'customer:edit_price' customer.id %}"
+        >
+          {% csrf_token %}
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label"
+              >نام و نام خانوادگی /غیر قابل تغییر
+            </label>
+            <input
+              type="text"
+              disabled
+              value="{{customer.fullname}}"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label">کل حساب :</label>
+            <input
+              type="number"
+              name="price"
+              value="{{customer.price}}"
+              class="form-control"
+            />
+          </div>
+
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label">
+              مبلغ پرداختی:</label
+            >
+            <input
+              type="number"
+              name="price_paid"
+              value="{{customer.price_paid}}"
+              class="form-control"
+            />
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              بازشگت
+            </button>
+            <button type="submit" class="btn btn-primary">ویرایش</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="delete_price_customer">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px">
+          تاییده حذف کل حساب  {{customer.fullname}}
+        </h5>
+        <button
+          type="button"
+          style="background-color: red; margin: 0 auto"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <h3>آیا مایل به حذف اطلاعات حساب  {{customer.fullname}} هستید ؟؟</h3>
+        <div
+          style="
+            display: felx;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <a
+            href="{% url 'customer:delete_price' customer.id %}"
+            class="btn btn-danger"
+          >
+            بله حذف شود !
+          </a>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            بازشگت
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="delete_customer">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px">
+          تاییده حذف مشتری
+        </h5>
+        <button
+          type="button"
+          style="background-color: red; margin: 0 auto"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <h3>آیا مایل به حذف {{customer.fullname}} هستید ؟؟</h3>
+        <div
+          style="
+            display: felx;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <a
+            href="{% url 'customer:delete' customer.id %}"
+            class="btn btn-danger"
+          >
+            بله حذف شود !
+          </a>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            بازشگت
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
