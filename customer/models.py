@@ -5,13 +5,12 @@ from accounts.models import User
 class Customer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     fullname = models.CharField(max_length=200, null=True, blank=True, verbose_name="نام و نام خانوادگی")
-    phone = models.CharField(max_length=12, unique=True, verbose_name="شماره تماس")
+    phone = models.CharField(max_length=12, verbose_name="شماره تماس")
     is_active = models.BooleanField(default=True, verbose_name="فعال")
     is_paid = models.BooleanField(default=False, verbose_name="پرداخت شده ")
     price = models.BigIntegerField(default=0,verbose_name="حساب در فروشگاه")
-    price_paid = models.BigIntegerField(default=0,verbose_name=" پول  پرداختی لحظه ای   ")
+    price_paid_all = models.BigIntegerField(default=0,verbose_name=" پول  پرداختی  ای کل    ")
     price_mandeh = models.BigIntegerField(default=0,verbose_name="باقی مانده در فروشگاه")
-    price_paid_all = models.BigIntegerField(default=0,verbose_name="کل پرداخت شده ها ")
     discription = models.TextField(max_length=300, null=True, blank=True, verbose_name="توضیحات مدیر")
     created_at = models.DateTimeField(auto_now=True, verbose_name="تاریخ  ")
     created_data = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ اضافه شدن")
@@ -29,3 +28,19 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.phone
+
+
+class Payments(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    discription = models.TextField(max_length=300, null=True, blank=True, verbose_name="توضیحات مدیر")
+    price_paid = models.BigIntegerField(default=0,verbose_name=" پول  پرداختی لحظه ای   ")
+    published_date = models.DateTimeField(auto_now=True, verbose_name="تاریخ  ")
+    created_data = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ اضافه شدن")
+    def Created_at(self):
+        return date2jalali(self.created_data)
+
+    class Meta:
+        verbose_name = "پرداخت  "
+        verbose_name_plural = "لیست پرداخت ها "
+

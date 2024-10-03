@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'home',
     'accounts',
     'customer',
+    'product',
+    'contact',
     'django.contrib.humanize'
 ]
 JALALI_DATE_DEFAULTS = {

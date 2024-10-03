@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Customer
+from .models import Customer,Payments
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 
@@ -25,7 +25,7 @@ def customer_list_view(request):
         else:
             messages.error(request,"اطلاعات مشتری ناقص است !")
             return render(request,"customer/list.html",{"customers":customers , "search":search})
-
+    print(customers)
     return render(request,"customer/list.html",{"customers":customers , "search":search})
 
 
@@ -33,6 +33,10 @@ def customer_list_view(request):
 def customer_detail_view(request,id):
     customers = Customer.objects.filter(user=request.user)
     customer = get_object_or_404(customers, id=id)
+    if customer.price_mandeh == 0 :
+        customer.is_paid = True
+        customer.save()
+    payments = Payments.objects.filter(user=request.user).filter(customer=customer)
     if request.method == "POST":
         discription = request.POST.get("discription")
         address = request.POST.get("address")
@@ -46,7 +50,7 @@ def customer_detail_view(request,id):
             messages.error(request,"اطلاعات دریافتی ناقص است !")
             return redirect(f"/customers/{customer.id}")
 
-    return render(request,"customer/detail.html",{"customer":customer })
+    return render(request,"customer/detail.html",{"customer":customer ,"payments":payments })
 
 
 def customer_delete_view(request,id):
@@ -66,17 +70,24 @@ def customer_edit_price_view(request,id):
     if request.method == "POST":
         price = request.POST.get("price")
         price_paid = request.POST.get("price_paid")
+        discription = request.POST.get("discription")
         if price and price_paid:
             if int(price_paid) > customer.price_mandeh :
                 messages.error(request,f"حداکثر پرداختی باید {customer.price_mandeh}تومان باشد ")
                 return redirect(f"/customers/{customer.id}")
             else:
-                customer.price_paid_all = customer.price_paid_all + int(price_paid)
                 customer.price = int(price)
+                customer.price_paid_all = customer.price_paid_all + int(price_paid)
                 customer.price_mandeh = customer.price - customer.price_paid_all
                 if customer.price_mandeh == 0:
                     customer.is_paid = True 
-                
+                else:
+                    customer.is_paid = False 
+
+                if int(price_paid) != 0:
+                    payment_customer =Payments.objects.create(user=request.user,customer=customer,discription=discription)
+                    payment_customer.price_paid = int(price_paid)
+                    payment_customer.save()
                 customer.save()
                 messages.success(request,"حساب مشتری شما ویرایش شد !")
                 return redirect(f"/customers/{customer.id}") 
@@ -84,10 +95,13 @@ def customer_edit_price_view(request,id):
     
 def customer_delete_price_view(request,id):
     customer = Customer.objects.get(id=id)
+    payment_customer =Payments.objects.all().filter(user=request.user,customer=customer)
+
     customer.price = 0
     customer.price_mandeh = 0
     customer.price_paid_all = 0
-    customer.price_paid = 0
+    customer.is_paid = True
+    payment_customer.delete()
     customer.save()
     messages.success(request,f"اطلاعات حساب {customer.fullname}ریست شد ! ")
-    return redirect(f"/customers/{customer.id}")
+    return redirect(f"/customers/{customer.id}") 

@@ -9,6 +9,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("",include("home.urls")),
     path("dashboard/",include("accounts.urls")),
-    path("customers/",include("customer.urls"))
+    path("customers/",include("customer.urls")),
+    path("contact/",include("contact.urls")),
+    path("products/",include("product.urls"))
 
 ]+ static(MEDIA_URL, document_root=MEDIA_ROOT)

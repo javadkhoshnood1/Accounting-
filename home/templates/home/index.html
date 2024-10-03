@@ -22,6 +22,17 @@
         <h4 class="heading-item-card">مدیریت فروشگاه</h4>
       </div>
     </div>
+
+    <a href="{% url 'customer:list' %}" style="text-decoration: none;">
+      <div  class="card-item-home">
+        <div>
+          <img src="{% static 'images/sel-home.png' %}" />
+  
+          <h4 class="heading-item-card"> فروش محصولات  </h4>
+        </div>
+      </div>
+  
+    </a>
     <div onclick="coming_soon()" class="card-item-home">
       <div>
         <img src="{% static 'images/analyses.png' %}" />
@@ -29,16 +40,18 @@
         <h4 class="heading-item-card">گزارشات</h4>
       </div>
     </div>
+    <a href="{% url 'product:list' %}" style="text-decoration: none;">
 
-    <div onclick="coming_soon()" class="card-item-home">
+    <div  class="card-item-home">
       <div>
         <img src="{% static 'images/product.png' %}" />
 
         <h4 class="heading-item-card">محصولات من</h4>
       </div>
     </div>
+    </a>
 
-  <a href="{% url 'customer:list' %}">
+  <a href="{% url 'customer:list' %}" style="text-decoration: none;">
     <div  class="card-item-home">
       <div>
         <img src="{% static 'images/customer.png' %}" />
@@ -49,15 +62,19 @@
 
   </a>
 
-    <div onclick="coming_soon()" class="card-item-home">
+  
+ 
+  <a href="{% url 'contact:index' %}" style="text-decoration: none;">
+
+    <div  class="card-item-home">
       <div>
         <img src="{% static 'images/support.png' %}" />
 
         <h4 class="heading-item-card"> پشتیبانی سایت</h4>
       </div>
     </div>
-
-  <a href="{% url 'accounts:logout' %}">
+</a>
+  <a href="{% url 'accounts:logout' %}" style="text-decoration: none;">
     <div class="card-item-home">
       <div>
         <img src="{% static 'images/logout.png' %}" />

@@ -1,0 +1,320 @@
+{% extends 'base.html' %} {% load static %} {% load humanize %} {% block title%}
+{{product.title}} {% endblock %} {% block content %}
+
+<div class="container">
+  <h2 class="text-center" style="margin-top: 20px">
+    جزئیات محصول {{product.title}}
+    <br />
+    {% if product.status == True %}
+
+  موجودی در انبار :<span class="text-success">{{product.mojidi}}</span>
+  <br/>
+
+    {% else %}
+<span class="text-danger">    در انبار موجود نیست 
+</span>
+<br/>
+
+    {% endif %}
+
+    <a
+      class="text-danger"
+      style="margin-top: -10px"
+      href="{% url 'home:index' %}"
+    >
+      بازگشت به منو
+    </a>
+    /
+
+    <a
+      class="text-success"
+      style="margin-top: -10px"
+      href="{% url 'product:list' %}"
+    >
+      لیست محصولات
+    </a>
+  </h2>
+  <div class="row" style="margin: 30px 0px">
+    <div class="col-lg-6" style="font-size: 18px">
+      مانده موجودی
+      <span style="color: #0dcaef; font-size: 24px"
+        >{{product.mojidi}} عدد
+      </span>
+    </div>
+
+    <div
+      class="col-lg-6"
+      style="display: flex; justify-content: end; align-items: center"
+    >
+      <div>
+        <button
+          class="btn btn-outline-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#add_mojodi"
+          data-bs-whatever="@mdo"
+        >
+          خرید محصول 
+          <img
+            style="width: 20px; height: 20px"
+            src="{% static 'images/edit.png' %}"
+          />
+        </button>
+
+        <a
+          data-bs-toggle="modal"
+          data-bs-target="#delete_product"
+          data-bs-whatever="@mdo"
+          class="btn btn-outline-danger"
+        >
+          حذف محصول
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/false.png' %}"
+          />
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="row customer-detail">
+    <div
+      class="col-lg-3"
+      style="display: flex; justify-content: center; align-items: center"
+    >
+      <div>
+        <img
+          src="{% static 'images/product.png' %}"
+          style="width: 150px; height: 150px"
+        />
+      </div>
+    </div>
+    <div class="col-lg-9 row" style="padding-right: 30px; margin-top: 20px">
+      <div class="col-6" style="margin-bottom: 15px">
+        <span style="font-size: 18px">نام محصول :</span>
+        <h4 style="color: #0dcaef; font-size: 25px">{{product.title}}</h4>
+      </div>
+      <div class="col-6">
+        <span style="font-size: 18px">قیمت خرید :</span>
+        <h4 style="color: #0dcaef; font-size: 27px">
+          {{product.price|intcomma:0}} تومان
+        </h4>
+      </div>
+
+      <div class="col-6" style="margin-bottom: 15px">
+        <span style="font-size: 18px">قیمت فروش :</span>
+        <h4 style="color: #0dcaef; font-size: 25px">
+          {{product.price_selling|intcomma:0}} تومان
+        </h4>
+      </div>
+      <div class="col-6" style="margin-bottom: 15px">
+        <span style="font-size: 18px"> درصد سود من :</span>
+        <h4 style="color: #0dcaef; font-size: 25px">{{product.percent}} %</h4>
+      </div>
+      <div class="col-6" style="margin-bottom: 15px">
+        <span style="font-size: 18px"> سود خالص تکی محصول :</span>
+        <h4 style="color: #0dcaef; font-size: 25px">
+          {{product.sod|intcomma:0}} تومان
+        </h4>
+      </div>
+      <div class="col-6" style="margin-bottom: 15px">
+        <span style="font-size: 18px">باقی مانده موجودی :</span>
+        <h4 style="color: #0dcaef; font-size: 25px">{{product.mojidi}} عدد</h4>
+      </div>
+
+      <div class="col-6">
+        <span style="font-size: 18px">دسته بندی :</span>
+        <h4 style="color: #0dcaef; font-size: 25px">
+          {% for cat in product.category.all %} {{cat.title}} {% endfor %}
+        </h4>
+      </div>
+
+      <div class="col-6">
+        <span style="font-size: 18px">تاریخ ثبت محصول :</span>
+        <h4 style="color: #0dcaef; font-size: 25px">{{product.created_at}}</h4>
+      </div>
+      <div class="col-6" style="background-color: #212121; border-radius: 20px">
+        <span style="font-size: 18px; color: green">لیست خرید این محصول :</span>
+        <h4 style="color: #0dcaef; font-size: 25px">
+          <button
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#data_kharid_product"
+            data-bs-whatever="@mdo"
+            class="btn btn-outline-success"
+          >
+            نمایش همه
+            <img
+              style="width: 25px; height: 25px"
+              src="{% static 'images/true.png' %}"
+            />
+          </button>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="add_mojodi">
+  <div class="modal-dialog">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px">
+          فرم خرید  محصول {{product.title}}
+        </h5>
+        <button
+          type="button"
+          style="background-color: red; margin: 0 auto"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label">خرید از : </label>
+            <input name="company" type="text" class="form-control" />
+          </div>
+         
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label">قیمت خرید  :</label>
+            <input type="number" name="price" class="form-control" />
+          </div>
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label">تخفیف شرکت  :</label>
+            <input type="number" name="off" class="form-control" />
+          </div>
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label">تعداد :</label>
+            <input type="number" name="mojodi" class="form-control" />
+          </div>
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label">توضیحات:</label>
+            <input type="text" name="discription" class="form-control" />
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              بازشگت
+            </button>
+            <button type="submit" class="btn btn-primary">ویرایش</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="delete_product">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px">
+          تاییده حذف مصحول {{product.title}}
+        </h5>
+        <button
+          type="button"
+          style="background-color: red; margin: 0 auto"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <h3>آیا مایل به حذف {{product.title}} هستید ؟؟</h3>
+        <div
+          style="
+            display: felx;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <a href="{% url 'product:delete' product.id  %}" class="btn btn-danger"> بله حذف شود ! </a>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            بازشگت
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="data_kharid_product">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px">
+  لیست خرید محصول{{product.title}}
+        </h5>
+        <button
+          type="button"
+          style="background-color: red; margin: 0 auto"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <h4
+            class="text-center p-2"
+            style="background-color: #18ef0d; border-radius: 20px"
+          >
+           {{product.availableproduct_set.count}}بار {{product.title}}  را خریده اید  
+          </h4>
+         {% if list_kharid_product %}
+          <table
+            class="table table-hover table-light table-responsive-xxl table-responsive-xl table-responsive-sm"
+          >
+            <thead>
+              <tr>
+                <td>شماره</td>
+                <td>خرید از </td>
+                <td>مبلغ خرید </td>
+                <td>تعداد </td>
+                <td>درصد تخفیف  </td>
+                <td>قیمت کل با تخفیف </td>
+                <td>تاریخ</td>
+                <td>توضیحات</td>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for item in list_kharid_product %}
+              <tr>
+                <td>{{item.id}}</td>
+                <td>{{item.company}}</td>
+                <td>{{item.price|intcomma:0}} تومان</td>
+                <td>{{item.mojodi}} عدد </td>
+                <td>{{item.off}} %</td>
+                <td>{{item.price_kol|intcomma:0}} تومان</td>
+
+                <td>{{item.Created_at}}</td>
+                <td>{{item.discription}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+
+          <div class="bg-danger p-5" style="border-radius: 20px">
+            <h3 class="text-center">
+              {{product.title}} را از هیچ شرکتی نخریده اید !
+            </h3>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

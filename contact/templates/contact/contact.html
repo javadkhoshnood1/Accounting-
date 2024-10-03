@@ -1,0 +1,143 @@
+{% extends 'base.html' %} {% load static %} {% block title %} پشتیبانی
+{%endblock %} {% block content %}
+
+<div class="container mt-3 mb-5">
+  <h2 class="text-center" style="color: #11a5c3">
+    مدیر و ادمین سایت /
+    <a
+      data-bs-toggle="modal"
+      data-bs-target="#add_contact"
+      data-bs-whatever="@mdo"
+      class="text-success"
+      style="text-decoration: none; cursor: pointer"
+    >
+      ثبت نظر
+    </a>
+    <br/>
+    <a href="{% url 'home:index' %}" class="text-danger" style="text-decoration: none;">
+        بازگشت به منو 
+    </a>
+  </h2>
+  <div class="row">
+    <div class="col-lg-4 right-contact">
+      <img src="{% static 'images/me.jpg' %}" />
+    </div>
+    <div class="col-lg-8 left-contact">
+      <h3 class="text-center">معرفی کوتاه</h3>
+      <div class="text-left">
+        <p style="color: #11a5c3; font-size: 24px; text-align: center">
+          بنده جواد خشنود دانشجوی نرم افزار 21 ساله که الان حدود 3 سال هست که
+          حوزه فول استک دولوپری یا به عبارت دیگ فرانت اند و بک اند سایت را شروع
+          کرده و در حال توسعه آموزش و نمونه کارهام هستم
+        </p>
+        <p style="color: #a67286; font-size: 18px; text-align: center">
+          رضایت خود را از نرم افزار پویا از طریق لینک بالا اعلام کنید .
+        </p>
+        <div
+          style="display: flex; justify-content: center; align-items: center"
+        >
+          <a
+            data-bs-toggle="modal"
+            data-bs-target="#contact"
+            data-bs-whatever="@mdo"
+            class="btn btn-outline-primary"
+            >ارتابط با مدیر
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="add_contact">
+  <div class="modal-dialog">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px">
+          فرم افزودن نظرات 
+        </h5>
+        <button
+          type="button"
+          style="background-color: red; margin: 0 auto"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label"
+              >نام رئیس فروشگاه   :</label
+            >
+            <input type="text" disabled value="{{request.user.fullname}}" name="fullname" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label"
+              >شماره تماس :</label
+            >
+            <input
+              type="text"
+              disabled
+              value="{{request.user.phone}}"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label">توضیحات:</label>
+            <input type="text" name="discription" class="form-control" />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              بازشگت
+            </button>
+            <button type="submit" class="btn btn-primary">افزودن</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="contact">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px">
+          اطلاعات ادمین سایت 
+        </h5>
+        <button
+          type="button"
+          style="background-color: red; margin: 0 auto"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body row">
+        <div class="col-lg-6" style="margin-bottom: 20px;">
+            شماره تماس : <br/><span style="color: #11a5c3;">09021632566</span>
+        </div>
+        
+        <div class="col-lg-6">
+            آیدی اینستاگرام : <span style="color: #11a5c3;">javad_khoshnood_@</span>
+        </div>
+
+        <div class="col-lg-6" style="margin-bottom: 20px;">
+            آیدی تلگرام  :<br/> <span style="color: #11a5c3;">lip_wern2566@</span>
+        </div>
+
+        <div class="col-lg-6">
+            ایمیل  :<span style="color: #11a5c3;">javadkhoshnood194@gmail.com</span> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

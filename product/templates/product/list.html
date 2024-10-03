@@ -1,0 +1,676 @@
+{% extends 'base.html' %} {% load static %} {% load humanize %} {% block title%}
+محصولات {{request.user.name_shop}} {% endblock %} {% block content %}
+
+<div
+  id="products"
+  class="container"
+  style="margin-top: 30px; margin-bottom: 30px"
+>
+  <table
+    style="border-radius: 20px"
+    class="table table-hover table-light table-responsive-xxl table-responsive-xl table-responsive-sm"
+  >
+    <h2 class="text-center" style="margin-bottom: -5px">
+
+      {% if search %} محصولاتی که دارای {{search}} هستند
+      <br />
+      
+      
+      <a
+      class="text-danger"
+
+        style="margin-top: -10px"
+        href="{% url 'product:list' %}"
+      >
+        لغو فیلتر
+      </a>
+
+      {% else %} محصولات {{request.user.name_shop}} {% endif %}
+      {% if name_category %}
+    </br>
+       دسته بندی :{{name_category}} / <a
+       class="text-danger"
+ 
+         style="margin-top: -10px"
+         href="{% url 'product:list' %}"
+       >
+         لغو فیلتر
+       </a>
+      {% endif %}
+      <br />
+      <a
+      data-bs-toggle="modal"
+      data-bs-target="#add_category"
+      data-bs-whatever="@mdo"
+        class="text-primary"
+        style="margin-top: -10px;cursor: pointer;"
+      >
+      افزودن دسته بندی 
+      </a>
+      /
+      <a
+      data-bs-toggle="modal"
+      data-bs-target="#add_product"
+      data-bs-whatever="@mdo"
+        class="text-success"
+        style="margin-top: -10px;cursor: pointer;"
+      >
+      افزودن محصول 
+      </a>
+      /
+      <a
+        class="text-danger"
+        style="margin-top: -10px"
+        href="{% url 'home:index' %}"
+      >
+        بازگشت به منو
+      </a>
+    </h2>
+
+    <div class="customers-div row">
+      <div class="col-6 customers-div-right">
+        <form method="get">
+          <label style="display: block; font-size: 20px; color: #0dcaef"
+            >جستجو محصول
+          </label>
+          <input
+            type="text"
+            name="search"
+            required
+            class="form-control"
+            style="width: 50%; display: inline; margin-left: 8px"
+          />
+          <button type="submit" class="btn btn-outline-primary">جستجو</button>
+        </form>
+      </div>
+      <div class="col-6 customers-div-left">
+        <button       data-bs-toggle="modal"
+        data-bs-target="#list_category"
+        data-bs-whatever="@mdo"  class="btn btn-outline-primary">
+          فیلتر دسته بندی 
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/category.png' %}"
+          />
+        </button>
+        <button onclick="products()" class="btn btn-outline-secondary">
+          همه
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/all.png' %}"
+          />
+        </button>
+        <button onclick="products_false()" class="btn btn-outline-danger">
+          اتمام موجودی <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/false.png' %}"
+          />
+        </button>
+        <button onclick="products_true()" class="btn btn-outline-success">
+          موجودی  
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/true.png' %}"
+          />
+        </button>
+      </div>
+    </div>
+    <thead class="bg-light">
+      <tr>
+        <td>آیدی</td>
+        <td>نام محصول </td>
+        <td>دسته بندی </td>
+        <td>قیمت خرید </td>
+        <td>سود من </td>
+        <td>قیمت فروش</td>
+        <td>وضعیت موجودی</td>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for product in products %}
+        <tr>
+          <td>
+              <a style="color: black;text-decoration: none;" href="{% url 'product:detail' product.id %}">{{product.id}}</a>
+            
+          </td>
+          <td>
+            <a style="color: black;text-decoration: none;" href="{% url 'product:detail' product.id %}">{{product.title}}</a>
+          </td>
+          <td>{% for cat in product.category.all %} {{cat.title}} {% endfor %}</td>
+          <td>{{product.price|intcomma:0}}تومان</td>
+          <td>{{product.percent}}%</td>
+          <td>{{product.price_selling|intcomma:0}}تومان</td>
+          <td>
+            {% if product.status == True %}
+            <img
+              style="width: 25px; height: 25px"
+              src="{% static 'images/true.png' %}"
+            />
+
+            {% else %}
+            <img
+              style="width: 25px; height: 25px"
+              src="{% static 'images/false.png' %}"
+            />
+            {% endif %}
+          </td>
+        </tr>
+      </a>
+
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+<div
+  id="products_false"
+  class="container"
+  style="margin-top: 30px; margin-bottom: 30px;display: none;"
+>
+  <table
+    style="border-radius: 20px"
+    class="table table-hover table-light table-responsive-xxl table-responsive-xl table-responsive-sm"
+  >
+    <h2 class="text-center" style="margin-bottom: -5px">
+
+      {% if search %} محصولاتی که دارای {{search}} هستند
+      <br />
+      
+      
+      <a
+      class="text-danger"
+
+        style="margin-top: -10px"
+        href="{% url 'product:list' %}"
+      >
+        لغو فیلتر
+      </a>
+
+      {% else %} محصولات {{request.user.name_shop}} {% endif %}
+      {% if name_category %}
+    </br>
+       دسته بندی :{{name_category}} / <a
+       class="text-danger"
+ 
+         style="margin-top: -10px"
+         href="{% url 'product:list' %}"
+       >
+         لغو فیلتر
+       </a>
+      {% endif %}
+      <br />
+      <a
+      data-bs-toggle="modal"
+      data-bs-target="#add_category"
+      data-bs-whatever="@mdo"
+        class="text-primary"
+        style="margin-top: -10px;cursor: pointer;"
+      >
+      افزودن دسته بندی 
+      </a>
+      /
+      <a
+      data-bs-toggle="modal"
+      data-bs-target="#add_product"
+      data-bs-whatever="@mdo"
+        class="text-success"
+        style="margin-top: -10px;cursor: pointer;"
+      >
+      افزودن محصول 
+      </a>
+      /
+      <a
+        class="text-danger"
+        style="margin-top: -10px"
+        href="{% url 'home:index' %}"
+      >
+        بازگشت به منو
+      </a>
+    </h2>
+
+    <div class="customers-div row">
+      <div class="col-6 customers-div-right">
+        <form method="get">
+          <label style="display: block; font-size: 20px; color: #0dcaef"
+            >جستجو محصول
+          </label>
+          <input
+            type="text"
+            name="search"
+            required
+            class="form-control"
+            style="width: 50%; display: inline; margin-left: 8px"
+          />
+          <button type="submit" class="btn btn-outline-primary">جستجو</button>
+        </form>
+      </div>
+      <div class="col-6 customers-div-left">
+        <button       data-bs-toggle="modal"
+        data-bs-target="#list_category"
+        data-bs-whatever="@mdo"  class="btn btn-outline-primary">
+          فیلتر دسته بندی 
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/category.png' %}"
+          />
+        </button>
+        <button onclick="products()" class="btn btn-outline-secondary">
+          همه
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/all.png' %}"
+          />
+        </button>
+        <button onclick="products_false()" class="btn btn-outline-danger">
+          اتمام موجودی <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/false.png' %}"
+          />
+        </button>
+        <button onclick="products_true()" class="btn btn-outline-success">
+          موجودی  
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/true.png' %}"
+          />
+        </button>
+      </div>
+    </div>
+    <thead class="bg-light">
+      <tr>
+        <td>آیدی</td>
+        <td>نام محصول </td>
+        <td>دسته بندی </td>
+        <td>قیمت خرید </td>
+        <td>سود من </td>
+        <td>قیمت فروش</td>
+        <td>وضعیت موجودی</td>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for product in products %}
+       {% if product.status == False %}
+       <tr>
+        <td>
+          <a style="color: black;text-decoration: none;" href="{% url 'product:detail' product.id %}">{{product.id}}</a>
+        
+      </td>
+      <td>
+        <a style="color: black;text-decoration: none;" href="{% url 'product:detail' product.id %}">{{product.title}}</a>
+      </td>
+        <td>{% for cat in product.category.all %} {{cat.title}} {% endfor %}</td>
+        <td>{{product.price|intcomma:0}}تومان</td>
+        <td>{{product.percent}}%</td>
+        <td>{{product.price_selling|intcomma:0}}تومان</td>
+        <td>
+          {% if product.status == True %}
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/true.png' %}"
+          />
+
+          {% else %}
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/false.png' %}"
+          />
+          {% endif %}
+        </td>
+      </tr>
+       {% endif %}
+
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div
+  id="products_true"
+  class="container"
+  style="margin-top: 30px; margin-bottom: 30px;display: none;"
+>
+  <table
+    style="border-radius: 20px"
+    class="table table-hover table-light table-responsive-xxl table-responsive-xl table-responsive-sm"
+  >
+    <h2 class="text-center" style="margin-bottom: -5px">
+
+      {% if search %} محصولاتی که دارای {{search}} هستند
+      <br />
+      
+      
+      <a
+      class="text-danger"
+
+        style="margin-top: -10px"
+        href="{% url 'product:list' %}"
+      >
+        لغو فیلتر
+      </a>
+
+      {% else %} محصولات {{request.user.name_shop}} {% endif %}
+      {% if name_category %}
+    </br>
+       دسته بندی :{{name_category}} / <a
+       class="text-danger"
+ 
+         style="margin-top: -10px"
+         href="{% url 'product:list' %}"
+       >
+         لغو فیلتر
+       </a>
+      {% endif %}
+      <br />
+      <a
+      data-bs-toggle="modal"
+      data-bs-target="#add_category"
+      data-bs-whatever="@mdo"
+        class="text-primary"
+        style="margin-top: -10px;cursor: pointer;"
+      >
+      افزودن دسته بندی 
+      </a>
+      /
+      <a
+      data-bs-toggle="modal"
+      data-bs-target="#add_product"
+      data-bs-whatever="@mdo"
+        class="text-success"
+        style="margin-top: -10px;cursor: pointer;"
+      >
+      افزودن محصول 
+      </a>
+      /
+      <a
+        class="text-danger"
+        style="margin-top: -10px"
+        href="{% url 'home:index' %}"
+      >
+        بازگشت به منو
+      </a>
+    </h2>
+
+    <div class="customers-div row">
+      <div class="col-6 customers-div-right">
+        <form method="get">
+          <label style="display: block; font-size: 20px; color: #0dcaef"
+            >جستجو محصول
+          </label>
+          <input
+            type="text"
+            name="search"
+            required
+            class="form-control"
+            style="width: 50%; display: inline; margin-left: 8px"
+          />
+          <button type="submit" class="btn btn-outline-primary">جستجو</button>
+        </form>
+      </div>
+      <div class="col-6 customers-div-left">
+        <button       data-bs-toggle="modal"
+        data-bs-target="#list_category"
+        data-bs-whatever="@mdo"  class="btn btn-outline-primary">
+          فیلتر دسته بندی 
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/category.png' %}"
+          />
+        </button>
+        <button onclick="products()" class="btn btn-outline-secondary">
+          همه
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/all.png' %}"
+          />
+        </button>
+        <button onclick="products_false()" class="btn btn-outline-danger">
+          اتمام موجودی <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/false.png' %}"
+          />
+        </button>
+        <button onclick="products_true()" class="btn btn-outline-success">
+          موجودی  
+          <img
+            style="width: 25px; height: 25px"
+            src="{% static 'images/true.png' %}"
+          />
+        </button>
+      </div>
+    </div>
+    <thead class="bg-light">
+      <tr>
+        <td>آیدی</td>
+        <td>نام محصول </td>
+        <td>دسته بندی </td>
+        <td>قیمت خرید </td>
+        <td>سود من </td>
+        <td>قیمت فروش</td>
+        <td>وضعیت موجودی</td>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for product in products %}
+      {% if product.status == True %}
+      <tr>
+        <td>
+          <a style="color: black;text-decoration: none;" href="{% url 'product:detail' product.id %}">{{product.id}}</a>
+        
+      </td>
+      <td>
+        <a style="color: black;text-decoration: none;" href="{% url 'product:detail' product.id %}">{{product.title}}</a>
+      </td>
+       <td>{% for cat in product.category.all %} {{cat.title}} {% endfor %}</td>
+       <td>{{product.price|intcomma:0}}تومان</td>
+       <td>{{product.percent}}%</td>
+       <td>{{product.price_selling|intcomma:0}}تومان</td>
+       <td>
+         {% if product.status == True %}
+         <img
+           style="width: 25px; height: 25px"
+           src="{% static 'images/true.png' %}"
+         />
+
+         {% else %}
+         <img
+           style="width: 25px; height: 25px"
+           src="{% static 'images/false.png' %}"
+         />
+         {% endif %}
+       </td>
+     </tr>
+      {% endif %}
+
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+<div class="modal fade" id="add_category">
+  <div class="modal-dialog">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header" >
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px;">فرم  افزودن دسته بندی محصولات    </h5>
+          <button
+          type="button"
+          style="background-color: red;margin: 0 auto;"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'product:add_category' %}">
+          {% csrf_token %}
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label"> عنوان دسته بندی   :</label>
+            <input type="text" name="title" class="form-control" />
+          </div>
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label"> توضیحات  :</label>
+            <input type="text" name="discription" class="form-control" />
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              بازشگت 
+            </button>
+            <button type="submit" class="btn btn-primary">افزودن</button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="add_product">
+  <div class="modal-dialog">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header" >
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px;">فرم  افزودن محصول  به فروشگاه </h5>
+          <button
+          type="button"
+          style="background-color: red;margin: 0 auto;"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" >
+          {% csrf_token %}
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label"> نام محصول :</label>
+            <input type="text" name="title" class="form-control" />
+          </div>
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label"> دسته بندی  :</label>
+            {% if categorys %}
+            <select name="category" id="cars" class="form-control">
+{% for cat in categorys %}
+<option name="category" value="{{cat.id}}" style="color: black;">{{cat.title}}</option>
+
+{% endfor %}
+</select>
+{% else %}
+<p class="bg-danger text-center " style="border-radius: 20px;padding: 5px;">لطفا یک دسته بندی جدید اضافه کنید </p>
+{% endif %}
+             
+           
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label"
+              >قیمت خرید  :</label
+            >
+            <input type="number" name="price" class="form-control" id="recipient-name" />
+          </div>
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label">درصد سود من :</label>
+            <input type="number" name="percent" class="form-control" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              بازشگت 
+            </button>
+            {% if categorys %}
+            <button type="submit" class="btn btn-primary">افزودن</button>
+            {% else %}
+            <button type="button" class="btn btn-outline-danger">
+              شما هیچ دسته بندی ندارد
+            </button>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="list_category">
+  <div class=" modal-dialog modal-fullscreen">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px">
+          لیست  دسته بندی های {{user.name_shop}}
+        </h5>
+        <button
+          type="button"
+          style="background-color: red; margin: 0 auto"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+       
+      {% if categorys %}
+      <div class="container">
+        <div style="padding: 20px; border-radius: 20px;margin: 20px 0px;" class="bg-success">
+          <h4 class="text-center">تعداد {{categorys.count}} دسته بندی برای شما یافت شد </h4>
+        </div>
+
+        <table class="table table-hover table-light table-responsive-xxl table-responsive-xl table-responsive-sm">
+          <thead>
+            <tr>
+              <td>شماره</td>
+              <td>عنوان</td>
+              <td>توضیحات</td>
+              <td>تعداد محصول </td>
+              <td>تاریخ </td>
+            </tr>
+          </thead>
+
+          <tbody>
+           {% for cat in categorys %}
+           <tr>
+            <td><a href="{% url 'product:list_category' cat.id %}">{{cat.id}}</a></td>
+            <td><a href="{% url 'product:list_category' cat.id %}">{{cat.title}}</a></td>
+            <td>{{cat.discription}}</td>
+            <td>{{cat.product_set.count}}</td>
+            <td>{{cat.Created_at}}</td>
+          </tr>
+           {% endfor %}
+
+          </tbody>
+        </table>
+
+      </div>
+
+      {% else %}
+      <div class="container bg-danger" style="padding: 20px; border-radius: 20px;">
+        <h4 class="text-center">هیچ دسته بندی برای شما یافت نشد !</h4>
+
+      </div>
+
+      {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function products(params) {
+    document.getElementById("products").style.display = "grid";
+    document.getElementById("products_false").style.display = "none";
+    document.getElementById("products_true").style.display = "none";
+  }
+
+  function products_false(params) {
+    document.getElementById("products").style.display = "none";
+    document.getElementById("products_false").style.display = "grid";
+    document.getElementById("products_true").style.display = "none";
+  }
+
+  function products_true(params) {
+    document.getElementById("products").style.display = "none";
+    document.getElementById("products_false").style.display = "none";
+    document.getElementById("products_true").style.display = "grid";
+  }
+</script>
+{% endblock %}

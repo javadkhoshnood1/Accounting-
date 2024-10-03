@@ -1,7 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% block title %} ثبت نام در پویا
 {%endblock %} {% block content %}
 <div class="container form-div-reigster">
-{% if  status == False %}
 <div class="form-head">ثبت نام در فروشگاه پویا</div>
 <form class="row"  method="post">
   {% csrf_token %}
@@ -83,34 +82,8 @@
     <button type="submit" class="btn btn-outline-success">ارسال فرم</button>
   </div>
 </form>
-{% else %}
 
-<div class="form-head">کد تایید ارسالی به شماره {{phone}}را وارد کنید </div>
 
-{% if phone %}
-
-<form class="row"  method="post" action="{% url 'accounts:code' %}">
-  {% csrf_token %}
-
-  <div class="col-12">
-    <label class="d-block" style="font-size: 22px;">کد تایید ارسالی :</label>
-    <input
-    style="width: 100%; color: black;"
-    type="number"
-    name="code"
-    required
-    placeholder=" کد تایید خود را وارد کنید "
-  />
-  </div>
-<div style="width: 50%;">
-  <button class="btn btn-success">ایجاد کاربر </button>
-
-</div>  
-  </form>
-{% else %}
-
-  {% endif %}
-{% endif %}
 </div>
 
 {% endblock %}

@@ -119,12 +119,7 @@
           {{customer.price_mandeh|intcomma:0}} تومان
         </h4>
       </div>
-      <div class="col-6" style="margin-bottom: 15px">
-        <span style="font-size: 18px">پرداخت لحظه ای :</span>
-        <h4 style="color: #0dcaef; font-size: 25px">
-          {{customer.price_paid|intcomma:0}} تومان
-        </h4>
-      </div>
+     
 
       <div class="col-6">
         <span style="font-size: 18px">توضیحات :</span>
@@ -138,10 +133,27 @@
       </div>
 
       <div class="col-6">
-        <span style="font-size: 18px">تاریخ خرید:</span>
+        <span style="font-size: 18px">تاریخ ایجاد مشتری  :</span>
         <h4 style="color: #0dcaef; font-size: 25px">{{customer.Created_at}}</h4>
       </div>
-
+      <div class="col-6" style="background-color: #212121; border-radius: 20px">
+        <span style="font-size: 18px; color: green">لیست پرداختی {{customer.fullname}} :</span>
+        <h4 style="color: #0dcaef; font-size: 25px">
+          <button
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#data_price_customer"
+            data-bs-whatever="@mdo"
+            class="btn btn-outline-success"
+          >
+          نمایش همه 
+            <img
+              style="width: 25px; height: 25px"
+              src="{% static 'images/true.png' %}"
+            />
+          </button>
+        </h4>
+      </div>
       <div class="col-6" style="background-color: #212121; border-radius: 20px">
         <span style="font-size: 18px; color: red">ریست اطلاعات:</span>
         <h4 style="color: #0dcaef; font-size: 25px">
@@ -160,6 +172,7 @@
           </button>
         </h4>
       </div>
+      
     </div>
   </div>
 </div>
@@ -251,17 +264,6 @@
         >
           {% csrf_token %}
           <div class="mb-1">
-            <label for="message-text" class="col-form-label"
-              >نام و نام خانوادگی /غیر قابل تغییر
-            </label>
-            <input
-              type="text"
-              disabled
-              value="{{customer.fullname}}"
-              class="form-control"
-            />
-          </div>
-          <div class="mb-1">
             <label for="message-text" class="col-form-label">کل حساب :</label>
             <input
               type="number"
@@ -279,6 +281,14 @@
               type="number"
               name="price_paid"
               value="{{customer.price_paid}}"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-1">
+            <label for="message-text" class="col-form-label">توضیحات پرداختی   :</label>
+            <input
+              type="text"
+              name="discription"
               class="form-control"
             />
           </div>
@@ -381,6 +391,67 @@
             بازشگت
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="data_price_customer">
+  <div class=" modal-dialog modal-fullscreen">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px">
+          لیست پرداخت شده {{customer.fullname}}
+        </h5>
+        <button
+          type="button"
+          style="background-color: red; margin: 0 auto"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+       
+        <div class="container">
+          {% if customer.is_paid == True %}
+          <h4 class="text-center p-2" style="background-color: #18ef0d; border-radius: 20px;">{{customer.fullname}} هیچ حسابی ندارد </h4>
+
+          {% else %}
+          <h4 class="text-center p-2" style="background-color: #0dcaef; border-radius: 20px;">تا کنون مبلغ {{customer.price_paid_all|intcomma:0}}  تومان پرداخت شده است و مبلغ {{customer.price_mandeh|intcomma:0}} تومان از {{customer.price|intcomma:0}}  تومان مانده است  </h4>
+
+          {% endif %}
+          {% if payments %}
+          <table class="table table-hover table-light table-responsive-xxl table-responsive-xl table-responsive-sm">
+            <thead>
+              <tr>
+                <td>شماره</td>
+                <td>مبلغ</td>
+                <td>تاریخ </td>
+                <td>توضیحات</td>
+              </tr>
+            </thead>
+
+            <tbody>
+             {% for pay in payments %}
+             <tr>
+              <td>{{pay.id}}</td>
+              <td>{{pay.price_paid|intcomma:0}} تومان </td>
+              <td>{{pay.Created_at}}</td>
+              <td>{{pay.discription}}</td>
+            </tr>
+             {% endfor %}
+
+            </tbody>
+          </table>
+          {% else %}
+
+          <div class="bg-danger p-5 " style="border-radius: 20px;">
+            <h3 class="text-center">{{customer.fullname}} تا الان هیچ پرداختی نداشته است</h3>
+          </div>
+          {% endif %}
+        </div>
+
       </div>
     </div>
   </div>
