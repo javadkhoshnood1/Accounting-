@@ -40,6 +40,17 @@
       style="display: flex; justify-content: end; align-items: center"
     >
       <div>
+        <a
+          class="btn btn-outline-warning"
+          data-bs-whatever="@mdo"
+          href="/sale/?customer={{customer.id}}"
+        >
+          فروش محصول
+          <img
+            style="width: 20px; height: 20px"
+            src="{% static 'images/sale.png' %}"
+          />
+        </a>
         <button
           class="btn btn-outline-primary"
           data-bs-toggle="modal"
@@ -58,7 +69,7 @@
           data-bs-toggle="modal"
           data-bs-target="#edit_customer_price"
         >
-          ویرایش حساب
+          ثبت وجه  
           <img
             style="width: 25px; height: 25px"
             src="{% static 'images/true.png' %}"
@@ -113,13 +124,13 @@
           {{customer.price_paid_all|intcomma:0}} تومان
         </h4>
       </div>
+
       <div class="col-6" style="margin-bottom: 15px">
         <span style="font-size: 18px">باقی مانده حساب :</span>
         <h4 style="color: #0dcaef; font-size: 25px">
           {{customer.price_mandeh|intcomma:0}} تومان
         </h4>
       </div>
-     
 
       <div class="col-6">
         <span style="font-size: 18px">توضیحات :</span>
@@ -133,20 +144,23 @@
       </div>
 
       <div class="col-6">
-        <span style="font-size: 18px">تاریخ ایجاد مشتری  :</span>
+        <span style="font-size: 18px">تاریخ ایجاد مشتری :</span>
         <h4 style="color: #0dcaef; font-size: 25px">{{customer.Created_at}}</h4>
       </div>
-      <div class="col-6" style="background-color: #212121; border-radius: 20px">
-        <span style="font-size: 18px; color: green">لیست پرداختی {{customer.fullname}} :</span>
+
+      <div class="col-6">
+        <span style="font-size: 18px; color: white"
+          >لیست محصولات خرید کرده {{customer.fullname}} :</span
+        >
         <h4 style="color: #0dcaef; font-size: 25px">
           <button
             type="button"
             data-bs-toggle="modal"
-            data-bs-target="#data_price_customer"
+            data-bs-target="#data_sale_customer"
             data-bs-whatever="@mdo"
-            class="btn btn-outline-success"
+            class="btn btn-success"
           >
-          نمایش همه 
+            نمایش همه
             <img
               style="width: 25px; height: 25px"
               src="{% static 'images/true.png' %}"
@@ -154,15 +168,36 @@
           </button>
         </h4>
       </div>
-      <div class="col-6" style="background-color: #212121; border-radius: 20px">
-        <span style="font-size: 18px; color: red">ریست اطلاعات:</span>
+      <div class="col-6">
+        <span style="font-size: 18px; color: white"
+          >لیست پرداختی {{customer.fullname}} :</span
+        >
+        <h4 style="color: #0dcaef; font-size: 25px">
+          <button
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#data_price_customer"
+            data-bs-whatever="@mdo"
+            class="btn btn-warning"
+          >
+            نمایش همه
+            <img
+              style="width: 25px; height: 25px"
+              src="{% static 'images/true.png' %}"
+            />
+          </button>
+        </h4>
+      </div>
+
+      <div class="col-6">
+        <span style="font-size: 18px; color: white">ریست اطلاعات:</span>
         <h4 style="color: #0dcaef; font-size: 25px">
           <button
             type="button"
             data-bs-toggle="modal"
             data-bs-target="#delete_price_customer"
             data-bs-whatever="@mdo"
-            class="btn btn-outline-danger"
+            class="btn btn-danger"
           >
             حذف کل حساب این مشتری
             <img
@@ -172,7 +207,6 @@
           </button>
         </h4>
       </div>
-      
     </div>
   </div>
 </div>
@@ -264,11 +298,11 @@
         >
           {% csrf_token %}
           <div class="mb-1">
-            <label for="message-text" class="col-form-label">کل حساب :</label>
+            <label for="message-text" class="col-form-label">مانده حساب :</label>
             <input
               type="number"
-              name="price"
-              value="{{customer.price}}"
+              disabled
+              value="{{customer.price_mandeh}}"
               class="form-control"
             />
           </div>
@@ -285,12 +319,10 @@
             />
           </div>
           <div class="mb-1">
-            <label for="message-text" class="col-form-label">توضیحات پرداختی   :</label>
-            <input
-              type="text"
-              name="discription"
-              class="form-control"
-            />
+            <label for="message-text" class="col-form-label"
+              >توضیحات پرداختی :</label
+            >
+            <input type="text" name="discription" class="form-control" />
           </div>
 
           <div class="modal-footer">
@@ -313,7 +345,7 @@
     <div class="modal-content" id="modal-login">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px">
-          تاییده حذف کل حساب  {{customer.fullname}}
+          تاییده حذف کل حساب {{customer.fullname}}
         </h5>
         <button
           type="button"
@@ -324,7 +356,7 @@
         ></button>
       </div>
       <div class="modal-body">
-        <h3>آیا مایل به حذف اطلاعات حساب  {{customer.fullname}} هستید ؟؟</h3>
+        <h3>آیا مایل به حذف اطلاعات حساب {{customer.fullname}} هستید ؟؟</h3>
         <div
           style="
             display: felx;
@@ -397,7 +429,7 @@
 </div>
 
 <div class="modal fade" id="data_price_customer">
-  <div class=" modal-dialog modal-fullscreen">
+  <div class="modal-dialog modal-fullscreen">
     <div class="modal-content" id="modal-login">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px">
@@ -412,46 +444,127 @@
         ></button>
       </div>
       <div class="modal-body">
-       
         <div class="container">
           {% if customer.is_paid == True %}
-          <h4 class="text-center p-2" style="background-color: #18ef0d; border-radius: 20px;">{{customer.fullname}} هیچ حسابی ندارد </h4>
+          <h4
+            class="text-center p-2"
+            style="background-color: #18ef0d; border-radius: 20px"
+          >
+            {{customer.fullname}} هیچ حسابی ندارد
+          </h4>
 
           {% else %}
-          <h4 class="text-center p-2" style="background-color: #0dcaef; border-radius: 20px;">تا کنون مبلغ {{customer.price_paid_all|intcomma:0}}  تومان پرداخت شده است و مبلغ {{customer.price_mandeh|intcomma:0}} تومان از {{customer.price|intcomma:0}}  تومان مانده است  </h4>
+          <h4
+            class="text-center p-2"
+            style="background-color: #0dcaef; border-radius: 20px"
+          >
+            تا کنون مبلغ {{customer.price_paid_all|intcomma:0}} تومان پرداخت شده
+            است و مبلغ {{customer.price_mandeh|intcomma:0}} تومان از
+            {{customer.price|intcomma:0}} تومان مانده است
+          </h4>
 
-          {% endif %}
-          {% if payments %}
-          <table class="table table-hover table-light table-responsive-xxl table-responsive-xl table-responsive-sm">
+          {% endif %} {% if payments %}
+          <table
+            class="table table-hover table-light table-responsive-xxl table-responsive-xl table-responsive-sm"
+          >
             <thead>
               <tr>
                 <td>شماره</td>
                 <td>مبلغ</td>
-                <td>تاریخ </td>
+                <td>تاریخ</td>
                 <td>توضیحات</td>
               </tr>
             </thead>
 
             <tbody>
-             {% for pay in payments %}
-             <tr>
-              <td>{{pay.id}}</td>
-              <td>{{pay.price_paid|intcomma:0}} تومان </td>
-              <td>{{pay.Created_at}}</td>
-              <td>{{pay.discription}}</td>
-            </tr>
-             {% endfor %}
-
+              {% for pay in payments %}
+              <tr>
+                <td>{{pay.id}}</td>
+                <td>{{pay.price_paid|intcomma:0}} تومان</td>
+                <td>{{pay.Created_at}}</td>
+                <td>{{pay.discription}}</td>
+              </tr>
+              {% endfor %}
             </tbody>
+
           </table>
+          <a class="btn btn-outline-info" onclick="window.print()">
+            پرینت 
+          </a>
           {% else %}
 
-          <div class="bg-danger p-5 " style="border-radius: 20px;">
-            <h3 class="text-center">{{customer.fullname}} تا الان هیچ پرداختی نداشته است</h3>
+          <div class="bg-danger p-5" style="border-radius: 20px">
+            <h3 class="text-center">
+              {{customer.fullname}} تا الان هیچ پرداختی نداشته است
+            </h3>
           </div>
           {% endif %}
         </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<div class="modal fade" id="data_sale_customer">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content" id="modal-login">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 28px">
+          لیست محصولات خرید کرده {{customer.fullname}}
+        </h5>
+        <button
+          type="button"
+          style="background-color: red; margin: 0 auto"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {% if customer_sales %}
+        <div class="container">
+          <table
+            class="table table-hover table-light table-responsive-xxl table-responsive-xl table-responsive-sm"
+          >
+            <thead>
+              <tr>
+                <td>شماره</td>
+                <td>نام محصول</td>
+                <td>قیمت تکی</td>
+                <td>تعداد</td>
+                <td>قیمت کل</td>
+                <td>تاریخ</td>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for sale in customer_sales %}
+              <tr>
+                <td>{{sale.id}}</td>
+                <td>{{sale.product}}</td>
+                <td>{{sale.product.price_selling|intcomma:0}} تومان</td>
+                <td>{{sale.tedad}}</td>
+                <td>{{sale.price_kol|intcomma:0}} تومان</td>
+                <td>{{sale.Created_at}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <a class="btn btn-outline-info" onclick="window.print()">
+            پرینت 
+          </a>
+        </div>
+
+        {% else %}
+
+        <div class="container">
+          <div class="bg-danger p-5" style="border-radius: 20px">
+          <h3 class="text-center">
+            {{customer.fullname}} تا الان هیچ  محصولی نخریده است 
+          </h3>
+        </div>
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>

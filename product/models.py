@@ -32,7 +32,7 @@ class Product(models.Model):
     sod = models.BigIntegerField(default=0)
     discription = models.TextField(max_length=300, null=True, blank=True, verbose_name="توضیحات مدیر")
     created_at = models.DateField(auto_now_add=True, blank=True, null=True, verbose_name="تاریخ افزودن محصول")
-    category = models.ManyToManyField(Category,blank=True, verbose_name="دسته بندی ها ")
+    category = models.ForeignKey(Category,null=True,blank=True,on_delete=models.CASCADE, verbose_name="دسته بندی ها ")
 
 
     class Meta:
@@ -59,7 +59,7 @@ class AvailableProduct(models.Model):
     company = models.CharField(max_length=255,verbose_name="شرکت خرید")
     status = models.BooleanField(default=True)
     discription = models.TextField(max_length=300, null=True, blank=True, verbose_name="توضیحات مدیر")
-    created_at = models.DateField(auto_created=True, blank=True, null=True, verbose_name="تاریخ افزودن محصول")
+    created_at = models.DateField(auto_now_add=True, blank=True, null=True, verbose_name="تاریخ افزودن محصول")
     price = models.BigIntegerField(default=0, null=True, blank=True, verbose_name="قیمت خرید")
     price_kol = models.BigIntegerField(default=0, null=True, blank=True)
     off = models.IntegerField(default=0, null=True, blank=True, verbose_name="تخفیف  شرکت ")
@@ -69,8 +69,7 @@ class AvailableProduct(models.Model):
         verbose_name = "خرید  محصول"
         verbose_name_plural = "خرید  محصولات  "
 
-    def __str__(self):
-        return self.mojodi
+    
 
-    def created_at(self):
+    def Created_at(self):
         return date2jalali(self.created_at)

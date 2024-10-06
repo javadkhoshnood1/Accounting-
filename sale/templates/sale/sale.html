@@ -1,0 +1,251 @@
+{% extends 'base.html' %} {% load static %} {% load humanize %} {% block title %} فروش محصولات به مشتری {% endblock %} {% block content %}
+<div class="container my-3" style="height: 500px;">
+  {% if customers %}
+  <form method="get">
+  <table
+    style="border-radius: 20px"
+    class="table table-hover  table-responsive-xxl table-responsive-xl table-responsive-sm"
+  >
+  <h2 class="text-center" style="margin:10px 0px">
+    مشتری خود را انتخاب کنید !
+    <br/>
+    <a
+    class="text-primary"
+
+      style="margin-top: -10px"
+      href="{% url 'sale:sale' %}"
+    >
+      جستجو دوباره 
+    </a> / 
+
+    <a
+        href="{% url 'customer:list' %}"
+      class="text-success"
+      style="margin-top: -10px;cursor: pointer;"
+    >
+    لیست  مشتری 
+    </a>
+    /
+    <a
+      class="text-danger"
+      style="margin-top: -10px"
+      href="{% url 'home:index' %}"
+    >
+      بازگشت به منو
+    </a>
+  </h2>
+    <thead class="bg-light">
+      <tr>
+        <td>آیدی</td>
+        <td>انتخاب </td>
+        <td>نام و نام خانوادگی</td>
+        <td>شماره تماس</td>
+        <td>مانده حساب</td>
+        <td>وضعیت</td>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for customer in customers %}
+      <a href="{% url 'customer:detail' customer.id %}">
+        <tr>
+          <td class="{{customer.id}}">
+            <a href="{% url 'customer:detail' customer.id %}"
+              >{{customer.id}}</a
+            >
+          </td>
+          <td class="{{customer.id}}">
+            <input class="form-check-input" type="radio" name="customer" value="{{customer.id}}" >
+
+          </td>
+          <td class="{{customer.id}}">
+            <a
+              style="color: black; text-decoration: none"
+              href="{% url 'customer:detail' customer.id %}"
+              >{{customer.fullname}}</a
+            >
+          </td class="{{customer.id}}">
+          <td class="{{customer.id}}">{{customer.phone}}</td>
+          <td class="{{customer.id}}">{{customer.price_mandeh|intcomma:0}}تومان</td>
+          <td class="{{customer.id}}">
+            {% if customer.is_paid == True %}
+            <img
+              style="width: 25px; height: 25px"
+              src="{% static 'images/true.png' %}"
+            />
+
+            {% else %}
+            <img
+              style="width: 25px; height: 25px"
+              src="{% static 'images/false.png' %}"
+            />
+            {% endif %}
+          </td>
+        </tr>
+      </a>
+
+      {% endfor %}
+    </tbody>
+</table>
+<div class="d-flex justify-content-center align-items-center">
+    <button class="btn btn-outline-info">
+        انتخاب محصولات برای این مشتری 
+    </button>
+</div>
+</form>
+
+{% elif customer_selected %}
+<div class="row">
+  <div class="col-lg-5">
+
+    <h2>مشتری انتخاب شده : <span style="color: #0dcaef;">{{customer_selected.fullname}}</span></h2>
+    <p style="font-size: 22px;" class="text-success">محصولات و تعداد محصولات خرید کرده این مشتری را تعیین کنید !</p>
+  </div>
+  <div class="col-lg-4 d-flex align-items-center">
+    <h3>فروش محصولات</h3>
+  </div>
+
+  <div class="col-lg-3 d-flex justify-content-end align-items-center">
+
+    <a
+    class="text-primary"
+
+      style="margin-top: -10px"
+      href="{% url 'sale:sale' %}"
+    >
+      جستجو دوباره 
+    </a> / 
+
+    <a
+        href="{% url 'customer:list' %}"
+      class="text-success"
+      style="margin-top: -10px;cursor: pointer;"
+    >
+    لیست  مشتری 
+    </a>
+    /
+    <a
+      class="text-danger"
+      style="margin-top: -10px"
+      href="{% url 'home:index' %}"
+    >
+      بازگشت به منو
+    </a>
+
+  </div>
+</div>
+
+<hr/>
+<form method="get">
+  <label style="display: block; font-size: 20px; color: #0dcaef"
+    >جستجو محصول
+  </label>
+  <input
+  type="text"
+  name="customer_selected"
+  value="{{customer_selected.id}}"
+  required
+  class="form-control"
+  style="width: 50%; display: none; margin-left: 8px;margin-bottom: 10px;"
+/>
+  <input
+    type="text"
+    name="search_products"
+    required
+    class="form-control"
+    style="width: 50%; display: inline; margin-left: 8px;margin-bottom: 10px;"
+  />
+  <button type="submit" class="btn btn-outline-primary">جستجو</button> 
+  {% if search_products %}
+/
+<a class="text-danger" href="/sale/?customer={{customer_selected.id}}">
+  لغو فیلتر 
+</a>
+  {% endif %}
+
+
+</form>
+<form method="post">
+  {% csrf_token %}
+  <table
+    style="border-radius: 20px"
+    class="table table-hover  table-responsive-xxl table-responsive-xl table-responsive-sm"
+  >
+  
+  
+  
+    <thead class="bg-light">
+      <tr>
+        <td>آیدی</td>
+        <td>انتخاب </td>
+        <td>نام محصول </td>
+        <td>دسته بندی </td>
+        <td>قیمت </td>
+        <td>تعداد</td>
+      </tr>
+    </thead>
+    <tbody>
+      <input class="form-control"   name="customer" style="display: none;" value="{{customer_selected.id}}"/>
+      {% for product in products %}
+      {% if product.status == True %}
+      <tr>
+        <td>
+          {{product.id}}
+        
+      </td>
+      <td>
+        <input name="id-{{product.id}}" type="checkbox" class="checkbox" />
+      </td>
+      <td>
+        {{product.title}}
+      </td>
+       <td>{{product.category}}</td>
+
+       <td>{{product.price_selling|intcomma:0}}تومان</td>
+       <td>
+        <input class="form-control" type="number" name="tedad-{{product.id}}">
+
+       </td>
+       
+     </tr>
+      {% endif %}
+
+      {% endfor %}
+    </tbody>
+
+</table>
+<div class="d-flex justify-content-center align-items-center">
+    <button type="submit" class="btn btn-outline-success">
+        فروش محصولات برای این مشتری 
+    </button>
+</div>
+</form>
+
+
+  {% else %}
+  <div class="row" style="height: 600px">
+    <div class="col-lg-3 mt-2">
+      <h4>لطفا مشتری مد نظر خود را انتخاب کنید .</h4>
+    </div>
+    <div class="col-lg-6">
+      <form method="get">
+        <input
+          type="text"
+          name="search"
+          required
+          class="form-control"
+          style="width: 80%; display: inline; margin-left: 8px"
+        />
+        <button type="submit" class="btn btn-outline-primary">جستجو</button>
+      </form>
+    </div>
+    <div class="col-lg-3 d-flex justify-content-end mt-2">
+      <a class="text-danger" href="{% url 'home:index' %}">بازگشت به منو </a> /
+      <a class="text-primary" href="{% url 'customer:list' %}">لیست مشتریان </a>
+    </div>
+  </div>
+
+  {% endif %}
+</div>
+
+{% endblock %}

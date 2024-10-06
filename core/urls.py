@@ -11,6 +11,7 @@ urlpatterns = [
     path("dashboard/",include("accounts.urls")),
     path("customers/",include("customer.urls")),
     path("contact/",include("contact.urls")),
-    path("products/",include("product.urls"))
+    path("products/",include("product.urls")),
+    path("sale/",include("sale.urls")),
 
 ]+ static(MEDIA_URL, document_root=MEDIA_ROOT)

@@ -36,10 +36,11 @@ class Payments(models.Model):
     discription = models.TextField(max_length=300, null=True, blank=True, verbose_name="توضیحات مدیر")
     price_paid = models.BigIntegerField(default=0,verbose_name=" پول  پرداختی لحظه ای   ")
     published_date = models.DateTimeField(auto_now=True, verbose_name="تاریخ  ")
-    created_data = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ اضافه شدن")
+    created_data = models.DateTimeField(auto_now_add=True,null=True,blank=True, verbose_name="تاریخ اضافه شدن")
+
     def Created_at(self):
         return date2jalali(self.created_data)
-
+    
     class Meta:
         verbose_name = "پرداخت  "
         verbose_name_plural = "لیست پرداخت ها "

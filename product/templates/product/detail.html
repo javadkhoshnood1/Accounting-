@@ -123,13 +123,13 @@
       <div class="col-6">
         <span style="font-size: 18px">دسته بندی :</span>
         <h4 style="color: #0dcaef; font-size: 25px">
-          {% for cat in product.category.all %} {{cat.title}} {% endfor %}
+        {{product.category}}
         </h4>
       </div>
 
       <div class="col-6">
         <span style="font-size: 18px">تاریخ ثبت محصول :</span>
-        <h4 style="color: #0dcaef; font-size: 25px">{{product.created_at}}</h4>
+        <h4 style="color: #0dcaef; font-size: 25px">{{product.Created_at}}</h4>
       </div>
       <div class="col-6" style="background-color: #212121; border-radius: 20px">
         <span style="font-size: 18px; color: green">لیست خرید این محصول :</span>

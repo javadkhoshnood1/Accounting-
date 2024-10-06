@@ -137,7 +137,7 @@
           <td>
             <a style="color: black;text-decoration: none;" href="{% url 'product:detail' product.id %}">{{product.title}}</a>
           </td>
-          <td>{% for cat in product.category.all %} {{cat.title}} {% endfor %}</td>
+          <td>{{product.category}}</td>
           <td>{{product.price|intcomma:0}}تومان</td>
           <td>{{product.percent}}%</td>
           <td>{{product.price_selling|intcomma:0}}تومان</td>
@@ -301,7 +301,7 @@
       <td>
         <a style="color: black;text-decoration: none;" href="{% url 'product:detail' product.id %}">{{product.title}}</a>
       </td>
-        <td>{% for cat in product.category.all %} {{cat.title}} {% endfor %}</td>
+        <td>{{product.category}}</td>
         <td>{{product.price|intcomma:0}}تومان</td>
         <td>{{product.percent}}%</td>
         <td>{{product.price_selling|intcomma:0}}تومان</td>
@@ -464,7 +464,8 @@
       <td>
         <a style="color: black;text-decoration: none;" href="{% url 'product:detail' product.id %}">{{product.title}}</a>
       </td>
-       <td>{% for cat in product.category.all %} {{cat.title}} {% endfor %}</td>
+       <td>        {{product.category}}
+      </td>
        <td>{{product.price|intcomma:0}}تومان</td>
        <td>{{product.percent}}%</td>
        <td>{{product.price_selling|intcomma:0}}تومان</td>

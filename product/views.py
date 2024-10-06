@@ -48,14 +48,18 @@ def product_list_view(request):
         price = request.POST.get("price")
         percent = request.POST.get("percent")
         category = request.POST.get("category")
-        print(title,price,percent,category)
+        catgeory_select = get_object_or_404(categorys,id=category)
+        
         if title and price and percent and category:
-            new_product = Product.objects.create(user=request.user,title=title,price=int(price),percent=int(percent))
-            new_product.category.set(category)
-            new_product.price_selling = int(price) + int(price) * int(percent)/100
-            new_product.save()
-            messages.success(request,"محصول جدید شما اضافه شد !")
-            return redirect(f"/products/{new_product.id}")
+            if Product.objects.filter(user=request.user).filter(title__contains=title):
+                messages.error(request,"این محصول در لیست محصولات  وجود دارد !")
+                return redirect("/products/")
+            else:
+                new_product = Product.objects.create(category=catgeory_select,user=request.user,title=title,price=int(price),percent=int(percent))
+                new_product.price_selling = int(price) + int(price) * int(percent)/100
+                new_product.save()
+                messages.success(request,"محصول جدید شما اضافه شد !")
+                return redirect(f"/products/{new_product.id}")
         else:
             messages.error(request,"اطلاعات ناقس هست ")
     search = request.GET.get("search")
@@ -92,3 +96,7 @@ def delete_product_view(request,id):
     messages.success(request,f"{product.title} حذف شد !")
     product.delete()
     return redirect("/products/")
+
+
+
+
