@@ -1,0 +1,104 @@
+{% extends 'base.html' %} {% load static %} {% block title %} گزارشات {{request.user.name_shop}}
+{%endblock %} {% block content %}
+<div class="container">
+    <div class="row p-3">
+      <h2 class="text-center mb-2" style="color: #0DCAEF;">لیست گزارشات فروشگاه {{request.user.name_shop}}
+         <br/>
+      <a href="{% url 'home:index' %}" class="text-danger">
+         بازگشت به منو 
+      </a>
+      </h2>
+        <div class="col-lg-6">
+            <h3 class="text-center">گزارش محصولات </h3>
+            <canvas id="chart_products" width="500" height="500"></canvas>
+
+        </div>
+        <div class="col-lg-6">
+            <h3 class="text-center">گزارش مشتریان  </h3>
+            <canvas id="chart_customers" width="500" height="300"></canvas>
+
+        </div>
+      
+      
+        <div class="col-lg-6">
+         <h3 class="text-center">گزارش خرید و فروش   </h3>
+         <canvas id="sale_reports" width="500" height="300"></canvas>
+
+     </div>  
+      </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
+
+{% for item in products_reports %} {{item}}  {% endfor %}
+<script type="text/javascript">
+    let chart_products = document.getElementById("chart_products").getContext("2d");
+    let chart_customers = document.getElementById("chart_customers").getContext("2d");
+    let sale_reports = document.getElementById("sale_reports").getContext("2d");
+    
+let chart = new Chart(chart_products, {
+  type: "bar",
+  data: {
+     labels: ["کل محصولات ", "محصولات موجود ", 'مصحولات ناموجود'],
+     datasets: [
+        {
+          label: "تعداد ",
+          backgroundColor: "#a67286",
+          borderColor: "#a67286",
+          data: ["{{number_products|safe}}" , "{{ number_products_mojod|safe }}" ,"{{ number_products_not_mojod|safe }}"]
+        }
+     ]
+  },
+  options: {
+     title: {
+        text: "گزارش مصحولات",
+        display: true
+     }
+  }
+});
+
+let chart_customer = new Chart(chart_customers, {
+  type: "pie",
+  data: {
+     labels: ["کل مشتریان  ", " مشتریان تسویه نشده  ", 'مشتریان تسویه شده '],
+     datasets: [
+        {
+          label: "تعداد ",
+          data: ["{{customers|safe}}" , "{{ customers_not_paid|safe }}" ,"{{ customers_paid|safe }}"]
+        }
+     ]
+  },options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                        }
+                    },
+});
+
+
+let sale_report= new Chart(sale_reports, {
+  type: 'doughnut',
+  data: {
+     labels: ["کل خرید شما ", "کل فروش شما  "],
+     datasets: [
+        {
+          label: "قیمت (تومان)",
+
+          data: ["{{kharid_price|safe}}" , "{{ sale_price|safe }}" ]
+        }
+     ]
+  },options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                        }
+                    },
+});
+
+</script>
+
+
+{% endblock %}

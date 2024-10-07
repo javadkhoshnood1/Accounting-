@@ -33,13 +33,16 @@
       </div>
   
     </a>
-    <div onclick="coming_soon()" class="card-item-home">
+    <a href="{% url 'accounts:reports' %}" style="text-decoration: none;">
+
+    <div  class="card-item-home">
       <div>
         <img src="{% static 'images/analyses.png' %}" />
 
         <h4 class="heading-item-card">گزارشات</h4>
       </div>
     </div>
+    </a>
     <a href="{% url 'product:list' %}" style="text-decoration: none;">
 
     <div  class="card-item-home">

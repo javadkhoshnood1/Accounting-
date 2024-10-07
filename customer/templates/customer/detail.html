@@ -454,19 +454,17 @@
           </h4>
 
           {% else %}
-          <h4
-            class="text-center p-2"
-            style="background-color: #0dcaef; border-radius: 20px"
-          >
-            تا کنون مبلغ {{customer.price_paid_all|intcomma:0}} تومان پرداخت شده
-            است و مبلغ {{customer.price_mandeh|intcomma:0}} تومان از
-            {{customer.price|intcomma:0}} تومان مانده است
-          </h4>
+         
 
           {% endif %} {% if payments %}
           <table
             class="table table-hover table-light table-responsive-xxl table-responsive-xl table-responsive-sm"
           >
+          <div class="row mb-2">
+            <div class="col-5">نام مشتری :{{customer.fullname}}/ شماره تماس : {{customer.phone}}</div>
+            <div class="col-4">فروشگاه : {{request.user.name_shop}}</div>
+            <div class="col-3">تاریخ ایجاد مشتری :{{request.user.Created_at|date:"y/m/d"}}</div>
+          </div>
             <thead>
               <tr>
                 <td>شماره</td>
@@ -488,6 +486,14 @@
             </tbody>
 
           </table>
+          <h4
+          class="text-center p-2"
+          style="background-color: #0dcaef; border-radius: 20px"
+        >
+          تا کنون مبلغ {{customer.price_paid_all|intcomma:0}} تومان پرداخت شده
+          است و مبلغ {{customer.price_mandeh|intcomma:0}} تومان از
+          {{customer.price|intcomma:0}} تومان مانده است
+        </h4>
           <a class="btn btn-outline-info" onclick="window.print()">
             پرینت 
           </a>
@@ -523,6 +529,11 @@
       <div class="modal-body">
         {% if customer_sales %}
         <div class="container">
+          <div class="row mb-2">
+            <div class="col-5">نام مشتری :{{customer.fullname}}/ شماره تماس : {{customer.phone}}</div>
+            <div class="col-4">فروشگاه : {{request.user.name_shop}}</div>
+            <div class="col-3">تاریخ ایجاد مشتری :{{request.user.Created_at|date:"y/m/d"}}</div>
+          </div>
           <table
             class="table table-hover table-light table-responsive-xxl table-responsive-xl table-responsive-sm"
           >
@@ -550,6 +561,14 @@
               {% endfor %}
             </tbody>
           </table>
+          <h4
+            class="text-center p-2"
+            style="background-color: #0dcaef; border-radius: 20px"
+          >
+            تا کنون مبلغ {{customer.price_paid_all|intcomma:0}} تومان پرداخت شده
+            است و مبلغ {{customer.price_mandeh|intcomma:0}} تومان از
+            {{customer.price|intcomma:0}} تومان مانده است
+          </h4>
           <a class="btn btn-outline-info" onclick="window.print()">
             پرینت 
           </a>

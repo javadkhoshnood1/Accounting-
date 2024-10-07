@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-from jalali_date import datetime2jalali
+from jalali_date import datetime2jalali,date2jalali
 
 
 class MyUserManager(BaseUserManager):
@@ -47,7 +47,7 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = "phone"
 
     def Created_at(self):
-        return datetime2jalali(self.created_at)
+        return date2jalali(self.created_at)
 
     class Meta:
         verbose_name = "فروشگاه"

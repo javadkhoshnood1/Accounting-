@@ -43,8 +43,17 @@ INSTALLED_APPS = [
     'product',
     'contact',
     'sale',
-    'django.contrib.humanize'
+    'django.contrib.humanize',
+    'chartjs',
+    "compressor"    
 ]
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
 JALALI_DATE_DEFAULTS = {
     'Strftime': {
         'date': '%y/%m/%d',

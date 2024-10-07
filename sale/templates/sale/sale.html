@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% load static %} {% load humanize %} {% block title %} فروش محصولات به مشتری {% endblock %} {% block content %}
-<div class="container my-3" style="height: 500px;">
+<div class="container my-3" style="height: max-content">
   {% if customers %}
   <form method="get">
   <table
@@ -180,6 +180,7 @@
         <td>انتخاب </td>
         <td>نام محصول </td>
         <td>دسته بندی </td>
+        <td>موجودی</td>
         <td>قیمت </td>
         <td>تعداد</td>
       </tr>
@@ -200,6 +201,7 @@
         {{product.title}}
       </td>
        <td>{{product.category}}</td>
+       <td>{{product.mojidi}} عدد </td>
 
        <td>{{product.price_selling|intcomma:0}}تومان</td>
        <td>
@@ -223,7 +225,7 @@
 
 
   {% else %}
-  <div class="row" style="height: 600px">
+  <div class="row" style="height: max-content">
     <div class="col-lg-3 mt-2">
       <h4>لطفا مشتری مد نظر خود را انتخاب کنید .</h4>
     </div>

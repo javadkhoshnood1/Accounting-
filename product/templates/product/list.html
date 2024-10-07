@@ -12,7 +12,7 @@
   >
     <h2 class="text-center" style="margin-bottom: -5px">
 
-      {% if search %} محصولاتی که دارای {{search}} هستند
+    {% if search %}  محصولاتی که دارای {{search}} هستند /{{products.count}}محصول
       <br />
       
       
@@ -25,7 +25,7 @@
         لغو فیلتر
       </a>
 
-      {% else %} محصولات {{request.user.name_shop}} {% endif %}
+      {% else %}  محصولات {{request.user.name_shop}}/ {{products.count}}محصول {% endif %}
       {% if name_category %}
     </br>
        دسته بندی :{{name_category}} / <a
