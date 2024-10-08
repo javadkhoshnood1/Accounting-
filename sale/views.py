@@ -44,18 +44,22 @@ class SaleView(TemplateView):
         for item in products :
                 products = request.POST.get(f"id-{item.id}")
                 tedad = request.POST.get(f"tedad-{item.id}")
-                print(products)
+                print(tedad,item.mojidi)
                 if products:
-                    new_sale = Sale.objects.create(user=request.user,customer=customer_selected,product=item,tedad=int(tedad))
-                    new_sale.price_kol = new_sale.tedad * new_sale.product.price_selling
-                    customer_selected.price += new_sale.price_kol
-                    customer_selected.price_mandeh += new_sale.price_kol
-                    if customer_selected.price_mandeh !=0:
-                        customer_selected.is_paid = False
-                    new_sale.save()
-                    item.mojidi -= int(tedad)
-                    item.save()
-                    customer_selected.save()
+                    if int(tedad) > item.mojidi:
+                        messages.error(request,f"تعداد محصول در خواستی  {item.title} موجود نیست ")
+                        return redirect(f"/customers/{customer}")
+                    else:
+                        new_sale = Sale.objects.create(user=request.user,customer=customer_selected,product=item,tedad=int(tedad))
+                        new_sale.price_kol = new_sale.tedad * new_sale.product.price_selling
+                        customer_selected.price += new_sale.price_kol
+                        customer_selected.price_mandeh += new_sale.price_kol
+                        if customer_selected.price_mandeh !=0:
+                            customer_selected.is_paid = False
+                        new_sale.save()
+                        item.mojidi -= int(tedad)
+                        item.save()
+                        customer_selected.save()
         messages.success(request,"فروش محصول ثبت شد ")
         return redirect(f"/customers/{customer}")
         

@@ -123,6 +123,7 @@
         <td>قیمت خرید </td>
         <td>سود من </td>
         <td>قیمت فروش</td>
+        <td>مانده موجودی </td>
         <td>وضعیت موجودی</td>
       </tr>
     </thead>
@@ -141,6 +142,8 @@
           <td>{{product.price|intcomma:0}}تومان</td>
           <td>{{product.percent}}%</td>
           <td>{{product.price_selling|intcomma:0}}تومان</td>
+          <td>{{product.mojidi}}</td>
+
           <td>
             {% if product.status == True %}
             <img
@@ -286,6 +289,7 @@
         <td>قیمت خرید </td>
         <td>سود من </td>
         <td>قیمت فروش</td>
+        <td>مانده موجودی </td>
         <td>وضعیت موجودی</td>
       </tr>
     </thead>
@@ -305,6 +309,8 @@
         <td>{{product.price|intcomma:0}}تومان</td>
         <td>{{product.percent}}%</td>
         <td>{{product.price_selling|intcomma:0}}تومان</td>
+        <td>{{product.mojidi}}</td>
+
         <td>
           {% if product.status == True %}
           <img
@@ -449,6 +455,7 @@
         <td>قیمت خرید </td>
         <td>سود من </td>
         <td>قیمت فروش</td>
+        <td>مانده موجودی </td>
         <td>وضعیت موجودی</td>
       </tr>
     </thead>
@@ -469,6 +476,8 @@
        <td>{{product.price|intcomma:0}}تومان</td>
        <td>{{product.percent}}%</td>
        <td>{{product.price_selling|intcomma:0}}تومان</td>
+       <td>{{product.mojidi}}</td>
+
        <td>
          {% if product.status == True %}
          <img
